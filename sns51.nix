@@ -3,10 +3,16 @@
 let
   utils = import ./utils.nix;
 in {
+
+  # Import common configurat for all machines (locale, SSHd, updates...)
+  imports= [ ./common.nix ];
+
+  networking.hostName = "sns51"; # Define your hostname.
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    curl wget ipmitool vim git
+    git
   ];
 
   programs.mosh.enable = true;
