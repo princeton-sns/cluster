@@ -1,11 +1,11 @@
 { config, pkgs, ... }:
 
 let
-  utils = import ../utils.nix;
+  utils = import ../utils;
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
-  imports= [ ../common.nix ];
+  imports= [ ./common.nix ];
 
   networking.hostName = "sns51"; # Define your hostname.
 
