@@ -15,6 +15,8 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  # Allow passwordless `sudo` when logged in with SSH
+  security.pam.enableSSHAgentAuth = true;
 
   environment.systemPackages = with pkgs; [
     curl wget vim ipmitool
