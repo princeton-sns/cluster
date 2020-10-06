@@ -1,13 +1,13 @@
 { config, pkgs, ... }:
 
 let
+  hostname = "sns59";
+  common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
-  imports= [ ./common.nix ];
-
-  networking.hostName = "sns59"; # Define your hostname.
+  imports = [ common ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
