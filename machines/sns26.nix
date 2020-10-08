@@ -19,9 +19,9 @@ in {
 
   virtualisation.docker.enable = true;
 
-  users.users.alevy = {
+  users.users.npopescu = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "nataliepopescu";
   };
 }
