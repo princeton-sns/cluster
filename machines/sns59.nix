@@ -17,7 +17,10 @@ in {
 
   programs.mosh.enable = true;
 
-  virtualisation.docker.enable = true;
+  fileSystems."/nfs/home" = {
+    device = "adam-new.cs.princeton.edu:/home";
+    fsType = "nfs4";
+  };
 
   users.users.alevy = {
     isNormalUser = true;
@@ -30,4 +33,8 @@ in {
     openssh.authorizedKeys.keys = utils.githubSSHKeys "Lei-Houjyu";
   };
 
+  users.users.jiananl= {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
+  };
 }
