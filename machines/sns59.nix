@@ -28,6 +28,11 @@ in {
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
 
+  users.users.haoyu = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "Lei-Houjyu";
+  };
+
   users.users.jiananl= {
     isNormalUser = true;
     openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
