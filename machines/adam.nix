@@ -28,11 +28,4 @@ in {
   # Open TCP & UDP ports (2049 + statdPort + lockdPort) for NFS server
   networking.firewall.allowedTCPPorts = [ 2049 111 4000 4001 ];
   networking.firewall.allowedUDPPorts = [ 2049 111 4000 4001 ];
-
-
-  users.users.alevy = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
-  };
 }
