@@ -3,6 +3,7 @@
 
 {
   networking.hostName = hostname; # Define your hostname.
+  networking.domain = "cs.princeton.edu";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
