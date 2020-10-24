@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  hostname = "sns3";
+  hostname = "sns17";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
