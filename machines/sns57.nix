@@ -1,3 +1,5 @@
+# @theanoli using to run simulations that require lots of memory.
+
 { config, pkgs, ... }:
 
 let
@@ -19,9 +21,8 @@ in {
 
   virtualisation.docker.enable = true;
 
-  users.users.alevy = {
+  users.users.theano = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
   };
 }
