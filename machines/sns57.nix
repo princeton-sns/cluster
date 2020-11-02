@@ -23,7 +23,7 @@ in {
 
   users.users.theano = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];	
+    extraGroups = [ "wheel", "kvm" ];	
     openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
   };
 }
