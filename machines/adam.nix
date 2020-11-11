@@ -22,7 +22,7 @@ in {
     statdPort = 4000;
     lockdPort = 4001;
     exports = ''
-      /home sns59.cs.princeton.edu(rw)
+      /home 128.112.7.0/24(rw)
     '';
   };
   # Open TCP & UDP ports (2049 + statdPort + lockdPort) for NFS server
