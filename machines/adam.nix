@@ -150,8 +150,4 @@ in {
     email = "aalevy@cs.princeton.edu";
     acceptTerms = true;
   };
-  users.users.jiananl= {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
-  };
 }
