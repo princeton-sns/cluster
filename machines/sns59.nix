@@ -22,12 +22,6 @@ in {
     fsType = "nfs4";
   };
 
-  users.users.alevy = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
-  };
-
   users.users.haoyu = {
     isNormalUser = true;
     openssh.authorizedKeys.keys = utils.githubSSHKeys "Lei-Houjyu";
