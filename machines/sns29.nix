@@ -1,7 +1,11 @@
+# Configured as a workstation for @alevy, primarily for testing stuff on the
+# cluster. If this comment is still here after November 2020, you can take over
+# this machine with a PR.
+
 { config, pkgs, ... }:
 
 let
-  hostname = "sns3";
+  hostname = "sns29";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
@@ -12,12 +16,11 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    git
   ];
 
   programs.mosh.enable = true;
 
-  virtualisation.docker.enable = true;
+  users.mutableUsers = false;
 
   users.users.alevy = {
     isNormalUser = true;

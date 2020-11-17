@@ -1,9 +1,7 @@
-# @theanoli using to run simulations that require lots of memory.
-
 { config, pkgs, ... }:
 
 let
-  hostname = "sns57";
+  hostname = "sns24";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
@@ -21,9 +19,9 @@ in {
 
   virtualisation.docker.enable = true;
 
-  users.users.theano = {
+  users.users.alevy = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
 }

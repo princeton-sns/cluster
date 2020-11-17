@@ -36,10 +36,10 @@
 6. sns44.cs.princeton.edu
 6. sns45.cs.princeton.edu
 8. sns49.cs.princeton.edu
-9. sns52.cs.princeton.edu
-10. sns51.cs.princeton.edu
-11. sns54.cs.princeton.edu
-12. sns55.cs.princeton.edu
+9. sns51.cs.princeton.edu
+10. sns52.cs.princeton.edu
+11. ~~sns55.cs.princeton.edu~~ (needs manual intervention)
+12. ~~sns55.cs.princeton.edu~~ (needs manual intervention)
 
 ## Gamma Cluster -- Temporary Reservations
 
