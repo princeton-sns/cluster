@@ -30,4 +30,10 @@ in {
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
   };
+  
+  users.users.araina= {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "ashwiniraina";
+  };
 }
