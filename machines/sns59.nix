@@ -31,4 +31,10 @@ in {
     isNormalUser = true;
     openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
   };
+  
+  users.users.alevy = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+  };
 }
