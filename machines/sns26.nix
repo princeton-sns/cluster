@@ -21,7 +21,7 @@ in {
 
   users.users.npopescu = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel", "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "nataliepopescu";
   };
 }
