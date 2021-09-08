@@ -20,6 +20,8 @@ in {
   programs.mosh.enable = true;
 
   virtualisation.docker.enable = true;
+  
+  services.openssh.forwardX11 = true;
 
   users.users.theano = {
     isNormalUser = true;
