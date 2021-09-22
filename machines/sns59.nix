@@ -17,6 +17,8 @@ in {
 
   programs.mosh.enable = true;
 
+  services.openssh.forwardX11 = true;
+
   fileSystems."/nfs/home" = {
     device = "adam-new.cs.princeton.edu:/home";
     fsType = "nfs4";
@@ -42,5 +44,11 @@ in {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+  };
+
+  users.users.theano = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];	
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
   };
 }
