@@ -24,26 +24,11 @@ in {
     fsType = "nfs4";
   };
 
-  users.users.haoyu = {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "Lei-Houjyu";
-  };
-
-  users.users.jiananl= {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
-  };
-  
+  # Using this machine for flash caching project (Orca). Added Sept. 2021.
   users.users.nkaas = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "nickaashoek";
-  };
-
-  users.users.alevy = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
 
   users.users.theano = {
