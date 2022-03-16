@@ -20,7 +20,7 @@ in {
 
   users.mutableUsers = false;
 
-  users.users.alevy = {
+  users.users.linanqinqin = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "linanqinqin";
