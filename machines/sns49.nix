@@ -23,6 +23,7 @@ in {
   users.users.linanqinqin = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "linanqinqin";
+    openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9XMuiS7A+rQq2Q7/wIwqFCdbBEI0vXEoLU0DCwPl1KAfvdMM1w46y6+WAv66NMgjDa9wcwjdTBugMdMvWfm6UnEV7XIEbYtK9C9NO4/2gYMcIuMU2KHhoMJ86CIKGrwTDvvmvnFuPdrtIrhH66fg2qPMMUPhlQ93KlFsD+bKdQaKIIewLQaPgECuR/wb8a5qmmpAGdGLMGu+RXVJO71kiPdO999V0g1+pBA1FOqkuUUiE7nYQQfZl5PiaiqnI4PeR5qV1HWOkpNESfdzkrMXG/aa9/sOjl/q3DK6kmAIy0iaqm4V7SWWSz7WCQIXAWfFORdbpMaCtDaRPMShzQY6F linanqinqin@linanqinqindeMacBook-Pro.local
+" ];
   };
 }
