@@ -1,4 +1,5 @@
 # Configured as a workstation for @cyu
+# Can be taken back at the end of Spring '22 semester (note from 04/08/2022)
 
 { config, pkgs, ... }:
 
