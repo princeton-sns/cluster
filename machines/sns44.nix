@@ -6,6 +6,13 @@ let
   hostname = "sns44";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
+  snapfaasSrc = pkgs.fetchFromGitHub {
+    owner = "princeton-sns";
+    repo = "snapfaas";
+    rev = "eeaeea41146b2f5faea9d588f3bdba3a0c178cf3";
+    sha256 = "0df1vr9anh7i360j9ngrlbqxa950j7zz4gd8bhzd8rpbwjn5yd0b";
+  };
+  snapfaas = (import snapfaasSrc { inherit pkgs; release = false; }).snapfaas;
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
@@ -15,6 +22,8 @@ in {
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     git
+    snapfaas lkl lmdb python39Full e2fsprogs gnumake wget
+    vim tmux
   ];
 
   # open up specified ports
