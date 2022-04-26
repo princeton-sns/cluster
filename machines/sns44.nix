@@ -44,4 +44,11 @@ in {
     extraGroups = [ "wheel" "kvm" ];	
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
+  
+  ## Only through Spring '22
+  users.users.moma = {
+    isNormalUser = true;
+    extraGroups = [ "kvm" ];
+    openssh.authorizedKeys.keys = (utils.githubSSHKeys "moinmir") ++ (utils.githubSSHKeys "Marinabeshai");
+  };
 }
