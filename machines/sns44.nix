@@ -51,4 +51,11 @@ in {
     extraGroups = [ "kvm" ];
     openssh.authorizedKeys.keys = (utils.githubSSHKeys "moinmir") ++ (utils.githubSSHKeys "Marinabeshai");
   };
+  
+  ## Only through Spring '22
+  users.users.hina = {
+    isNormalUser = true;
+    extraGroups = [ "kvm" ];
+    openssh.authorizedKeys.keys = (utils.githubSSHKeys "nfinkle") ++ (utils.githubSSHKeys "hillelkoslowe");
+  };
 }
