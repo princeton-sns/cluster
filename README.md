@@ -4,7 +4,7 @@
 
 | Cluster | CPU                    | RAM  | HDD   | SSD     |
 |---------|------------------------|------|-------------|---------|
-| Adam    | 2x8 2.2GHz Intel Xeon  | 64GB | 4x2TB (in RAID |         |
+| Adam    | 2x8 2.2GHz Intel Xeon  | 64GB | 4x2TB (in RAID) |         |
 | Alpha   | 2x4 2.3GHz AMD Opetron | 8GB  | 2x1TB | -       |
 | Beta    | 2x4 2.4GHz Intel Xeon  | 12GB | 2x1TB | 150GB   |
 | Gamma   | 2x8 2.2GHz Intel Xeon  | 64GB | 1TB   | 2x240GB |
