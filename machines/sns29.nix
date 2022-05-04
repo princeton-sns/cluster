@@ -24,7 +24,13 @@ in {
 
   users.users.alevy = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "snapfaas" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+  };
+
+  users.users.npopescu = {
+    isNormalUser = true;
+    extraGroups = [ "snapfaas" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "nataliepopescu";
   };
 }
