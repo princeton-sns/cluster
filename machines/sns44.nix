@@ -9,8 +9,8 @@ let
   snapfaasSrc = pkgs.fetchFromGitHub {
     owner = "princeton-sns";
     repo = "snapfaas";
-    rev = "eeaeea41146b2f5faea9d588f3bdba3a0c178cf3";
-    sha256 = "0df1vr9anh7i360j9ngrlbqxa950j7zz4gd8bhzd8rpbwjn5yd0b";
+    rev = "61c4bff408adb466ee2714f9a0a82c25acf9bdf0";
+    sha256 = "sha256-h0cJO/waluEkGEOku1MUPzRI6HvZlC/AkutgrT9NQW0=";
   };
   snapfaas = (import snapfaasSrc { inherit pkgs; release = false; }).snapfaas;
 in {
@@ -45,17 +45,10 @@ in {
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
   
-  ## Only through Spring '22
-  users.users.moma = {
+  ## Kevin Wang (@kw1122) working on snapfaas grader over summer '22
+  users.users.fierycandy = {
     isNormalUser = true;
     extraGroups = [ "kvm" ];
-    openssh.authorizedKeys.keys = (utils.githubSSHKeys "moinmir") ++ (utils.githubSSHKeys "Marinabeshai");
-  };
-  
-  ## Only through Spring '22
-  users.users.hina = {
-    isNormalUser = true;
-    extraGroups = [ "kvm" ];
-    openssh.authorizedKeys.keys = (utils.githubSSHKeys "nfinkle") ++ (utils.githubSSHKeys "hillelkoslowe");
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "kw1122";
   };
 }
