@@ -26,8 +26,9 @@ in {
     vim tmux
   ];
 
-  # open up specified ports
-  networking.firewall.allowedTCPPorts = [ 8888 ];
+  # Expose port for development snapfaas webhook server
+  networking.firewall.allowedTCPPorts = [ 8080 ];
+
 
   programs.mosh.enable = true;
 
