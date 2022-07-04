@@ -29,6 +29,11 @@ in {
   # Expose port for development snapfaas webhook server
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
+  fileSystems."/nfs/home" = {
+    device = "adam-new.cs.princeton.edu:/home";
+    fsType = "nfs4";
+  };
+
 
   programs.mosh.enable = true;
 
