@@ -33,4 +33,10 @@ in {
     extraGroups = [ "snapfaas" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "nataliepopescu";
   };
+  
+  users.users.kw22 = {
+    isNormalUser = true;
+    extraGroups = [ "snapfaas" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "kw1122";
+  };
 }
