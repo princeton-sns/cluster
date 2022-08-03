@@ -9,8 +9,8 @@ let
   snapfaasSrc = pkgs.fetchFromGitHub {
     owner = "princeton-sns";
     repo = "snapfaas";
-    rev = "61c4bff408adb466ee2714f9a0a82c25acf9bdf0";
-    sha256 = "sha256-h0cJO/waluEkGEOku1MUPzRI6HvZlC/AkutgrT9NQW0=";
+    rev = "9791be9d108dd45abf50d9a62681d7a0f61613d5";
+    sha256 = "sha256-ZJS7GDW7lBILrMKrKXxLAw5gjKunSai27RO3oZvJAn4=";
   };
   snapfaas = (import snapfaasSrc { inherit pkgs; release = false; }).snapfaas;
 in {
