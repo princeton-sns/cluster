@@ -150,4 +150,11 @@ in {
     email = "aalevy@cs.princeton.edu";
     acceptTerms = true;
   };
+
+  users.users.alevy = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+  };
+
 }
