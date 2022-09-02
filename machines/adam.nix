@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 let
+  imports = [ ./matrix.nix ];
   hostname = "adam";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
@@ -82,6 +83,7 @@ let
 
         users.users = {
           deplorable = {
+            isSystemUser = true;
             group = "deplorable";
           };
         };
@@ -147,7 +149,7 @@ in {
   };
 
   security.acme = {
-    email = "aalevy@cs.princeton.edu";
+    default.email = "aalevy@cs.princeton.edu";
     acceptTerms = true;
   };
 
