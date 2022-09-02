@@ -149,7 +149,7 @@ in {
   };
 
   security.acme = {
-    default.email = "aalevy@cs.princeton.edu";
+    defaults.email = "aalevy@cs.princeton.edu";
     acceptTerms = true;
   };
 
