@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  imports = [ ./matrix.nix ];
   hostname = "adam";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
@@ -96,7 +95,7 @@ let
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ deplorable common ];
+  imports = [ deplorable common ./matrix.nix ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
