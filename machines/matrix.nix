@@ -97,6 +97,7 @@ in {
       cas_config = {
         enabled = true;
         server_url = "https://fed.princeton.edu/";
+        service_url = fqdn;
         displayname_attribute = "name";
       };
       log_config = pkgs.writeText "log_config.yml" ''
