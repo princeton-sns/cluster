@@ -100,7 +100,7 @@ in {
         displayname_attribute = "displayname";
       };
       sso = {
-        update_profile_information = true;
+        update_profile_information = false;
       };
       listeners = [
         {
