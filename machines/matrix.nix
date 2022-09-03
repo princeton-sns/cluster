@@ -24,7 +24,7 @@ in {
         let
           # use 443 instead of the default 8448 port to unite
           # the client-server and server-server port for simplicity
-          server = { "m.server" = "princeton.systems:443"; };
+          server = { "m.server" = "${fqdn}:443"; };
         in ''
           add_header Content-Type application/json;
           return 200 '${builtins.toJSON server}';
@@ -32,7 +32,7 @@ in {
       locations."= /.well-known/matrix/client".extraConfig =
         let
           client = {
-            "m.homeserver" =  { "base_url" = "https://princeton.systems"; };
+            "m.homeserver" =  { "base_url" = "https://${fqdn}"; };
             "m.identity_server" =  { "base_url" = "https://vector.im"; };
           };
         # ACAO required to allow riot-web on any URL to request this json file
@@ -41,7 +41,11 @@ in {
           add_header Access-Control-Allow-Origin *;
           return 200 '${builtins.toJSON client}';
         '';
+    };
 
+    virtualHosts."${fqdn}" = {
+      enableACME = true;
+      forceSSL = true;
       # Or do a redirect instead of the 404, or whatever is appropriate for you.
       # But do not put a Matrix Web client here! See the Riot Web section below.
       locations."/".extraConfig = ''
@@ -90,8 +94,8 @@ in {
       password_config.enabled = false;
       cas_config = {
         enabled = true;
-        server_url = "https://fed.princeton.edu/";
-        service_url = "https://princeton.systems";
+        server_url = "https://fed.princeton.edu/cas";
+        service_url = "https://${fqdn}";
         displayname_attribute = "name";
       };
       log_config = pkgs.writeText "log_config.yml" ''
