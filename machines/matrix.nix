@@ -103,6 +103,11 @@ in {
       sso = {
         update_profile_information = false;
       };
+      user_directory = {
+        enabled = false;
+        search_all_users = true;
+        prefer_local_users = true;
+      };
       listeners = [
         {
           port = 8448;
