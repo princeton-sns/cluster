@@ -100,6 +100,7 @@ in {
         service_url = "https://${fqdn}";
         displayname_attribute = "displayname";
       };
+      auto_join_rooms = [ "#lobby:princeton.systems" ];
       sso = {
         update_profile_information = false;
       };
