@@ -57,18 +57,19 @@ in {
         proxyPass = "http://[::1]:8448"; # without a trailing /
       };
     };
-    #virtualHosts."chat.${config.networking.domain}" = {
-    #  enableACME = true;
-    #  forceSSL = true;
-    #  root = pkgs.element-web.override {
-    #    conf = {
-    #      default_server_config."m.homeserver" = {
-    #        "base_url" = "https://${fqdn}";
-    #        "server_name" = "${config.networking.domain}";
-    #      };
-    #    };
-    #  };
-    #};
+
+    virtualHosts."chat.princeton.systems" = {
+      enableACME = true;
+      forceSSL = true;
+      root = pkgs.element-web.override {
+        conf = {
+          default_server_config."m.homeserver" = {
+            "base_url" = "https://${fqdn}";
+            "server_name" = "princeton.systems";
+          };
+        };
+      };
+    };
   };
 
   services.postgresql = {
