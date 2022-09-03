@@ -88,10 +88,12 @@ in {
     enable = true;
     settings = {
       #federation_domain_whitelist = [ "matrix.org" "mozilla.org" "nixos.org" "is.currently.online" ];
-      server_name = config.networking.domain;
+      server_name = "princeton.systems";
       #account_threepid_delegates = {
       #  email = "https://vector.im";
       #};
+      enable_registration = false;
+      password_config.enabled = false;
       cas_config = {
         enabled = true;
         server_url = "https://fed.princeton.edu/";
