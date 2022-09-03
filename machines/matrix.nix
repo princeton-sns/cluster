@@ -87,6 +87,7 @@ in {
     settings = {
       #federation_domain_whitelist = [ "matrix.org" "mozilla.org" "nixos.org" "is.currently.online" ];
       server_name = "princeton.systems";
+      public_baseurl = "https://${fqdn}/";
       #account_threepid_delegates = {
       #  email = "https://vector.im";
       #};
