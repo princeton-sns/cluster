@@ -97,7 +97,10 @@ in {
         enabled = true;
         server_url = "https://fed.princeton.edu/cas";
         service_url = "https://${fqdn}";
-        displayname_attribute = "name";
+        displayname_attribute = "displayname";
+      };
+      sso = {
+        update_profile_information = true;
       };
       listeners = [
         {
