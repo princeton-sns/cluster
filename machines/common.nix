@@ -19,6 +19,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.fail2ban.enable = true;
   # Allow passwordless `sudo` when logged in with SSH
   security.sudo.wheelNeedsPassword = false;
 
