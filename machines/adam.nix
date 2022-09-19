@@ -95,7 +95,7 @@ let
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ deplorable common ./matrix.nix ];
+  imports = [ deplorable common ../utils/matrix.nix ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
