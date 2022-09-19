@@ -28,10 +28,10 @@ in {
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
 
-  users.users.npopescu = {
+  users.users.yue = {
     isNormalUser = true;
-    extraGroups = [ "snapfaas" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "nataliepopescu";
+    extraGroups = [ "wheel" "snapfaas" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "tan-yue";
   };
   
   users.users.kw22 = {
