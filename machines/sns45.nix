@@ -33,7 +33,10 @@ in {
     isNormalUser = true;
     openssh.authorizedKeys.keys =
       (utils.githubSSHKeys "jl3953")
-      ++ [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIeQ6wf0yUvjtkM5S9LMbcvvSjl3iYnxlYHPCgoRvSK JuiceSSH" ];
+      ++ [ 
+		"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIeQ6wf0yUvjtkM5S9LMbcvvSjl3iYnxlYHPCgoRvSK JuiceSSH" 
+		"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVkRUb04W5PGOi22YLMYsn9/Xs+IAsM+dzuiayuQ3fO jl87@princeton.edu"
+	];
   };
 
   users.users.root.openssh.authorizedKeys.keys = [
