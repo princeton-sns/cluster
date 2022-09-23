@@ -53,7 +53,7 @@ in {
   
   users.users.cherrypiejam = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
+    extraGroups = [ "wheel" "kvm" "docker" ];	
     openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
   };
   
