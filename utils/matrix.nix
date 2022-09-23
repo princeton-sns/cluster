@@ -55,6 +55,22 @@ in {
       # forward all Matrix API calls to the synapse Matrix homeserver
       locations."/_matrix" = {
         proxyPass = "http://[::1]:8448"; # without a trailing /
+
+        # Element iOS will send a request to cause Synapse to redirect to the
+        # SSO provider with a trailing slash:
+        #
+        #     /_matrix/client/r0/login/sso/redirect/?...
+        #
+        # This causes synapse to respond with an M_UNRECOGNIZED error. Thus, for
+        # now, explicitly match on that URL and remove the trailing slash. nginx
+        # takes care of the query parameters. This looks exactly like issue 4785
+        # [1]; however this should have been fixed in all recent versions of
+        # Element iOS.
+        #
+        # [1]: https://github.com/vector-im/element-ios/issues/4785
+        extraConfig = ''
+          rewrite ^(/_matrix/client/r0/login/sso/redirect)/$ $1 break;
+        '';
       };
     };
 
