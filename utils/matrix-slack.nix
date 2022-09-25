@@ -38,6 +38,7 @@ in {
   users.users.slackbridge = {
     description = "matrix-appservice-slack";
     home = dataDir;
+    homeMode = "770";
     group = "matrix-synapse";
     isSystemUser = true;
     createHome = true;
@@ -52,7 +53,7 @@ in {
       if [ ! -f '${registrationFile}' ]; then
           ${pkgs.matrix-appservice-slack}/bin/matrix-appservice-slack \
               -r \
-              -u ${escapeShellArg matrix_host} \
+              -u http://localhost:5858 \
               -c ${configFile} \
               -f ${registrationFile}
           fi
