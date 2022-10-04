@@ -103,6 +103,7 @@ in {
     enable = true;
     package = pkgs.matrix-synapse.overrideDerivation (oldAttrs: {
       patches = [./matrix-synapse-localpart.patch];
+      doCheck = false;
     });
     settings = {
       #federation_domain_whitelist = [ "matrix.org" "mozilla.org" "nixos.org" "is.currently.online" ];

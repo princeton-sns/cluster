@@ -131,6 +131,13 @@ in {
           out = "sns.cs.princeton.edu";
         };
       };
+      repos = {
+        "systems" = {
+          repo = "PrincetonSystems/www";
+          reference = "refs/heads/master";
+          out = "princeton.systems";
+        };
+      };
     };
   };
 
@@ -141,6 +148,15 @@ in {
       forceSSL = true;
       enableACME = true;
       root = "/var/lib/deplorable/sns.cs.princeton.edu";
+      locations."/.deplorable" = {
+        proxyPass = "http://127.0.0.1:1337/sns";
+      };
+    };
+    virtualHosts."princeton.systems" = {
+      serverAliases = [ "www.princeton.systems" ];
+      forceSSL = true;
+      enableACME = true;
+      root = "/var/lib/deplorable/systems";
       locations."/.deplorable" = {
         proxyPass = "http://127.0.0.1:1337/sns";
       };
@@ -156,12 +172,6 @@ in {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
-  };
-
-  users.users.leons = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
   };
 
 }
