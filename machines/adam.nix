@@ -156,7 +156,7 @@ in {
       serverAliases = [ "www.princeton.systems" ];
       forceSSL = true;
       enableACME = true;
-      root = "/var/lib/deplorable/systems";
+      root = "/var/lib/deplorable/princeton.systems";
       locations."/.deplorable" = {
         proxyPass = "http://127.0.0.1:1337/sns";
       };
