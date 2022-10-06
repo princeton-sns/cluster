@@ -14,15 +14,25 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    git
+    vim tmux wget
   ];
 
   programs.mosh.enable = true;
+
+  virtualisation.docker.enable = true;
 
   users.mutableUsers = false;
 
   users.users.lei = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "geraldleizhang";
+  };
+
+  users.users.leochanj = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "docker" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "leochanj105";
   };
 }
