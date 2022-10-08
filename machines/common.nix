@@ -3,6 +3,7 @@
 
 {
   networking.hostName = hostname; # Define your hostname.
+  networking.domain = "cs.princeton.edu";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -18,6 +19,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.fail2ban.enable = true;
   # Allow passwordless `sudo` when logged in with SSH
   security.sudo.wheelNeedsPassword = false;
 

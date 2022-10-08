@@ -1,9 +1,9 @@
-# @theanoli using to run simulations that require lots of memory.
+# Configured as a workstation for @lei
 
 { config, pkgs, ... }:
 
 let
-  hostname = "sns57";
+  hostname = "sns33";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
@@ -15,17 +15,24 @@ in {
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     git
+    vim tmux wget
   ];
 
   programs.mosh.enable = true;
 
   virtualisation.docker.enable = true;
-  
-  services.openssh.forwardX11 = true;
 
-  users.users.theano = {
+  users.mutableUsers = false;
+
+  users.users.lei = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+    extraGroups = [ "wheel" "docker" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "geraldleizhang";
+  };
+
+  users.users.leochanj = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "docker" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "leochanj105";
   };
 }
