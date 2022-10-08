@@ -17,6 +17,11 @@ in {
 
   programs.mosh.enable = true;
 
+  networking.firewall.allowedTCPPorts = [
+    # Frida server
+    8000
+  ];
+
   virtualisation.docker.enable = true;
 
   users.users.npopescu = {
