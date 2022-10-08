@@ -17,24 +17,29 @@ in {
 
   programs.mosh.enable = true;
 
+  services.openssh.forwardX11 = true;
+
   fileSystems."/nfs/home" = {
     device = "adam-new.cs.princeton.edu:/home";
     fsType = "nfs4";
   };
 
-  users.users.alevy = {
+  # Using this machine for flash caching project (Orca). Added Sept. 2021.
+  users.users.nkaas = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "nickaashoek";
+  };
+
+  users.users.theano = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];	
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+  };
+
+  users.users.leons = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
-  };
-
-  users.users.haoyu = {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "Lei-Houjyu";
-  };
-
-  users.users.jiananl= {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "amberlu";
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
   };
 }

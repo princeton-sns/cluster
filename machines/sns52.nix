@@ -1,9 +1,9 @@
-# @theanoli using to run simulations that require lots of memory.
+# @davidhliu uses this machine as a workstation
 
 { config, pkgs, ... }:
 
 let
-  hostname = "sns57";
+  hostname = "sns52";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
@@ -20,12 +20,10 @@ in {
   programs.mosh.enable = true;
 
   virtualisation.docker.enable = true;
-  
-  services.openssh.forwardX11 = true;
 
-  users.users.theano = {
+  users.users.davidhliu= {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "LedgeDash";
   };
 }
