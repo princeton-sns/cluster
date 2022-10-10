@@ -63,4 +63,10 @@ in {
     extraGroups = [ "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "kw1122";
   };
+
+  users.users.atli = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "ATLi2001";
+  };
 }
