@@ -158,7 +158,7 @@ in {
       enableACME = true;
       root = "/var/lib/deplorable/princeton.systems";
       locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/sns";
+        proxyPass = "http://127.0.0.1:1337/systems";
       };
     };
   };
