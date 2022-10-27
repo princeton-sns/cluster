@@ -66,7 +66,7 @@ in {
 
   users.users.atli = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];
+    extraGroups = [ "wheel" "kvm" "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "ATLi2001";
   };
 }
