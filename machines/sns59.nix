@@ -58,7 +58,7 @@ in {
     openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
   };
 
-   users.users.npopescu = {
+  users.users.npopescu = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "nataliepopescu";
