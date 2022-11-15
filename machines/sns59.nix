@@ -27,7 +27,7 @@ in {
   };
 
   # Expose ports for Faasten gateway
-  networking.firewall.allowedTCPPorts = [
+  networking.firewall.interfaces."enp7s0".allowedTCPPorts = [
     # 8080 for requests, 1337 for RPCs
     8080 1337
   ];
