@@ -26,6 +26,12 @@ in {
     fsType = "nfs4";
   };
 
+  # Expose ports for Faasten gateway
+  networking.firewall.allowedTCPPorts = [
+    # 8080 for requests, 1337 for RPCs
+    8080 1337
+  ];
+
   # Using this machine for flash caching project (Orca). Added Sept. 2021.
   users.users.nkaas = {
     isNormalUser = true;
@@ -35,26 +41,26 @@ in {
 
   users.users.theano = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
+    extraGroups = [ "wheel" "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
   };
 
   # For Faasten experiments
   users.users.yuetan = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
+    extraGroups = [ "wheel" "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "tan-yue";
   };
-  
+
   users.users.alevy = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
+    extraGroups = [ "wheel" "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
-  
+
   users.users.cherrypiejam = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" "docker" ];	
+    extraGroups = [ "wheel" "kvm" "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
   };
 
