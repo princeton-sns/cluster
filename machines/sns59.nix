@@ -21,7 +21,7 @@ in {
 
   services.openssh.forwardX11 = true;
 
-  virtualisation.docker.enable = true
+  virtualisation.docker.enable = true;
 
   fileSystems."/nfs/home" = {
     device = "adam-new.cs.princeton.edu:/home";
