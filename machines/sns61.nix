@@ -16,6 +16,8 @@ in {
     vim tmux
   ];
 
+  virtualisation.docker.enable = true;
+
   users.mutableUsers = false;
 
   # For Faasten experiments
