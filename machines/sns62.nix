@@ -40,4 +40,20 @@ in {
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOD4XspKe2E5BhBmx+GtRHdRR72+Q7wC7nFHbDj1VVzJ lschuermann/silicon/sns-nixbuild"
   ];
+
+  users.users.noiseeval = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = (
+      lib.flatten (
+        builtins.map utils.githubSSHKeys [
+          "alevy"
+          "lschuermann"
+          "leochanj105"
+        ]
+      )
+    ) ++ [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIBrOyN+OmWSv0/RYd7jK+TKx4tMO5Fuz8wyaMUR+j6A noise-eval-peer-key"
+    ];
+  };
 }

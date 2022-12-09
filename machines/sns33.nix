@@ -35,4 +35,20 @@ in {
     extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "leochanj105";
   };
+
+  users.users.noiseeval = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = (
+      lib.flatten (
+        builtins.map utils.githubSSHKeys [
+          "alevy"
+          "lschuermann"
+          "leochanj105"
+        ]
+      )
+    ) ++ [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIBrOyN+OmWSv0/RYd7jK+TKx4tMO5Fuz8wyaMUR+j6A noise-eval-peer-key"
+    ];
+  };
 }
