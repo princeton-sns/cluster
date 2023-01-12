@@ -1,13 +1,14 @@
+# Collective is an OIT hosted VM that @alevy "owns"
 { config, pkgs, ... }:
 
 let
-  hostname = "adam";
+  hostname = "collective";
   common = (import ./common.nix) { hostname = hostname; };
   utils = import ../utils;
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ../utils/deplorable.nix ../utils/matrix.nix ../utils/matrix-slack.nix ];
+  imports = [ ../utils/deplorable.nix common ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -17,21 +18,10 @@ in {
 
   programs.mosh.enable = true;
 
-  services.nfs.server = {
-    enable = true;
-    statdPort = 4000;
-    lockdPort = 4001;
-    exports = ''
-      /home 128.112.7.0/24(rw)
-    '';
-  };
-  networking.firewall.allowedTCPPorts = [ 
+  networking.firewall.allowedTCPPorts = [
     # NGINX
     80 443
-    # Open TCP & UDP ports (2049 + statdPort + lockdPort) for NFS server
-    2049 111 4000 4001
   ];
-  networking.firewall.allowedUDPPorts = [ 2049 111 4000 4001 ];
 
   services.deplorable = {
     enable = true;
@@ -55,35 +45,46 @@ in {
 
   services.nginx = {
     enable = true;
-    virtualHosts."sns.cs.princeton.edu" = {
-      serverAliases = [ "www.sns.cs.princeton.edu" ];
+    virtualHosts."cos316.princeton.edu" = {
       forceSSL = true;
       enableACME = true;
-      root = "/var/lib/deplorable/sns.cs.princeton.edu";
+      root = "/var/lib/deplorable/cos316";
       locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/sns";
+        proxyPass = "http://127.0.0.1:1337/cos316";
       };
     };
-    virtualHosts."princeton.systems" = {
-      serverAliases = [ "www.princeton.systems" ];
+    virtualHosts."os-seminar.princeton.systems" = {
       forceSSL = true;
       enableACME = true;
-      root = "/var/lib/deplorable/princeton.systems";
+      root = "/var/lib/deplorable/os-seminar";
       locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/systems";
+        proxyPass = "http://127.0.0.1:1337/cos316";
       };
+    };
+    virtualHosts."cos561.princeton.systems" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/home/rnetravali/public_html/cos561";
+    };
+    virtualHosts."ml-video-seminar.princeton.systems" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/home/rnetravali/public_html/cos561";
     };
   };
 
   security.acme = {
-    defaults.email = "aalevy@cs.princeton.edu";
+    defaults.email = "aalevy@princeton.edu";
     acceptTerms = true;
   };
 
   users.users.alevy = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
   };
 
+  users.users.rnetravali = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "ravinet";
+  };
 }
