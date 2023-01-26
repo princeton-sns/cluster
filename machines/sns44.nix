@@ -69,4 +69,11 @@ in {
     extraGroups = [ "wheel" "kvm" "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "ATLi2001";
   };
+  
+  users.users.scaspin = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" "docker" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "scaspin";
+  };
+  
 }
