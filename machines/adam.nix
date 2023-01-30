@@ -42,12 +42,20 @@ in {
           reference = "refs/heads/master";
           out = "sns.cs.princeton.edu";
         };
-      };
-      repos = {
         "systems" = {
           repo = "PrincetonSystems/www";
           reference = "refs/heads/master";
           out = "princeton.systems";
+        };
+        "cos316" = {
+          repo = "cos316/cos316-web";
+          reference = "refs/heads/master";
+          out = "cos316";
+        };
+        "os-seminar" = {
+          repo = "PrincetonSystems/os-seminar";
+          reference = "refs/heads/main";
+          out = "os-seminar";
         };
       };
     };
@@ -73,7 +81,7 @@ in {
         proxyPass = "http://127.0.0.1:1337/systems";
       };
     };
-    virtualHosts."cos316.princeton.edu" = {
+    virtualHosts."cos316.princeton.systems" = {
       forceSSL = true;
       enableACME = true;
       root = "/var/lib/deplorable/cos316";
@@ -86,7 +94,7 @@ in {
       enableACME = true;
       root = "/var/lib/deplorable/os-seminar";
       locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/cos316";
+        proxyPass = "http://127.0.0.1:1337/os-seminar";
       };
     };
     virtualHosts."cos561.princeton.systems" = {
