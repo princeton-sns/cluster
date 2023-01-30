@@ -124,6 +124,7 @@ in {
 
   users.users.rnetravali = {
     isNormalUser = true;
+    homeMode = "755";
     openssh.authorizedKeys.keys = utils.githubSSHKeys "ravinet";
   };
 
