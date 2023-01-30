@@ -73,6 +73,32 @@ in {
         proxyPass = "http://127.0.0.1:1337/systems";
       };
     };
+    virtualHosts."cos316.princeton.edu" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/var/lib/deplorable/cos316";
+      locations."/.deplorable" = {
+        proxyPass = "http://127.0.0.1:1337/cos316";
+      };
+    };
+    virtualHosts."os-seminar.princeton.systems" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/var/lib/deplorable/os-seminar";
+      locations."/.deplorable" = {
+        proxyPass = "http://127.0.0.1:1337/cos316";
+      };
+    };
+    virtualHosts."cos561.princeton.systems" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/home/rnetravali/public_html/cos561";
+    };
+    virtualHosts."ml-video-seminar.princeton.systems" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/home/rnetravali/public_html/cos561";
+    };
   };
 
   security.acme = {
@@ -84,6 +110,11 @@ in {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+  };
+
+  users.users.rnetravali = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "ravinet";
   };
 
 }
