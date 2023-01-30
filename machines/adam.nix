@@ -102,7 +102,7 @@ in {
     virtualHosts."cos561.princeton.systems" = {
       forceSSL = true;
       enableACME = true;
-      root = "/home/rnetravali/public_html/cos561";
+      root = "/home/rnetravali/public_html/COS561";
     };
     virtualHosts."ml-video-seminar.princeton.systems" = {
       forceSSL = true;
