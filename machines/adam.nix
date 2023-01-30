@@ -61,6 +61,8 @@ in {
     };
   };
 
+  systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
+
   services.nginx = {
     enable = true;
     virtualHosts."sns.cs.princeton.edu" = {
@@ -105,7 +107,7 @@ in {
     virtualHosts."ml-video-seminar.princeton.systems" = {
       forceSSL = true;
       enableACME = true;
-      root = "/home/rnetravali/public_html/cos561";
+      root = "/home/rnetravali/public_html/ml-video-seminar";
     };
   };
 
