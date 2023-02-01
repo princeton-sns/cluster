@@ -53,9 +53,14 @@ in {
           out = "cos316";
         };
         "os-seminar" = {
-          repo = "PrincetonSystems/os-seminar";
+          repo = "princetonsystems/os-seminar";
           reference = "refs/heads/main";
           out = "os-seminar";
+        };
+        "praxis" = {
+          repo = "princeton-sns/ideation_station";
+          reference = "refs/heads/main";
+          out = "praxis";
         };
       };
     };
@@ -108,6 +113,15 @@ in {
       forceSSL = true;
       enableACME = true;
       root = "/home/rnetravali/public_html/ml-video-seminar";
+    };
+    virtualHosts."praxis.princeton.systems" = {
+      forceSSL = true;
+      enableACME = true;
+      root = "/var/lib/deplorable/praxis";
+      basicAuthFile = "/var/lib/praxis-auth";
+      locations."/.deplorable" = {
+        proxyPass = "http://127.0.0.1:1337/praxis";
+      };
     };
   };
 
