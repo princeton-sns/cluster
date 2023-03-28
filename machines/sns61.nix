@@ -54,6 +54,7 @@ in {
           "alevy"
           "lschuermann"
           "leochanj105"
+          "scaspin"
         ]
       )
     ) ++ [
