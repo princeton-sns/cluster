@@ -19,9 +19,16 @@ in {
 
   virtualisation.docker.enable = true;
 
+  # For Leopard caching project
   users.users.theano = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+  };
+
+  users.users.nkaas = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "nickaashoek";
   };
 }
