@@ -56,13 +56,6 @@ in {
     extraGroups = [ "wheel" "kvm" "docker" ];	
     openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
   };
-  
-  ## Kevin Wang (@kw1122) working on snapfaas grader over summer '22
-  users.users.fierycandy = {
-    isNormalUser = true;
-    extraGroups = [ "kvm" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "kw1122";
-  };
 
   users.users.atli = {
     isNormalUser = true;
