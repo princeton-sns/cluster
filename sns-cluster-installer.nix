@@ -1,8 +1,16 @@
+{ installerTarget ? "isoImage", kexecRootSSHKey ? null }:
+
 let
   nixpkgs = builtins.fetchGit {
     url = "https://github.com/NixOS/nixpkgs";
     ref = "nixos-22.11";
     rev = "7dc71aef32e8faf065cb171700792cf8a65c152d";
+  };
+
+  cleverca22NixTests = builtins.fetchGit {
+    url = "https://github.com/cleverca22/nix-tests";
+    ref = "master";
+    rev = "2ba968302208ff0c17d555317c11fd3f06e947e2";
   };
 
   pkgs = import nixpkgs {};
@@ -39,10 +47,44 @@ let
       '';
     };
 
+  isoImageSystemConfig = { modulesPath, ... }: {
+    imports = [
+      # Add in the standard module for NixOS install media:
+      (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
+
+      # Provide an initial copy of the NixOS channel so that the user
+      # doesn't need to run "nix-channel --update" first.
+      (modulesPath + "/installer/cd-dvd/channel.nix")
+    ];
+  };
+
+  kexecSystemConfig = { ... }: {
+    imports = [
+      # Import cleverca22's kexec NixOS installer config
+      "${cleverca22NixTests}/kexec/configuration.nix"
+    ];
+
+    # Enable DHCP on all interfaces:
+    networking.useDHCP = true;
+
+    kexec.autoReboot = false;
+
+    users.users.root.openssh.authorizedKeys.keys = [
+      kexecRootSSHKey
+    ];
+  };
+
   targetSystem = import "${nixpkgs}/nixos" {
     configuration = { config, pkgs, lib, modulesPath, ... }: {
-      imports = [
-        (modulesPath + "/installer/cd-dvd/installation-cd-minimal.nix")
+      imports = (
+        lib.optional
+          (installerTarget == "isoImage")
+          isoImageSystemConfig
+      ) ++ (
+        lib.optional
+          (installerTarget == "kexec_tarball")
+          kexecSystemConfig
+      );
 
         # Provide an initial copy of the NixOS channel so that the user
         # doesn't need to run "nix-channel --update" first.
@@ -68,4 +110,4 @@ let
   };
 
 in
-  targetSystem.config.system.build.isoImage
+  targetSystem.config.system.build."${installerTarget}"
