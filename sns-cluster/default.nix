@@ -11,6 +11,7 @@ let
 in
 {
   imports = [
+    ./family-alpha.nix
     ./family-beta.nix
     ./family-gamma.nix
     ./filesystems.nix
