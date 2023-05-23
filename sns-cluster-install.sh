@@ -140,8 +140,8 @@ function fs_mount() {
 	# Mount the root file system, boot partition and state volumes:
 	mkdir -p /mnt
 	mount -t zfs rpool/local/transient/root /mnt
-	mkdir -p /mnt/boot /mnt/nix /mnt/etc /mnt/var/state
-	mount "/dev/$BOOT_PART_NODE" /mnt/boot
+	mkdir -p /mnt/boot0 /mnt/nix /mnt/etc /mnt/var/state
+	mount "/dev/$BOOT_PART_NODE" /mnt/boot0
 	mount -t zfs rpool/local/nix /mnt/nix
 	mount -t zfs rpool/state/system /mnt/var/state
 	mkdir -p /mnt/var/state/nixos
@@ -228,10 +228,12 @@ fi
 export TMPLSTR_BOOT_PART_UUID
 
 TMPLSTR_NULLABLE_SWAP_PART_UUID=""
+TMPLSTR_SWAP_PART_UUID_LIST=""
 if [ "$SWAP_PART_NODE" != "" ]; then
 	for NODE in /dev/disk/by-uuid/*; do
 		if [ "$(readlink -f "$NODE")" == "/dev/$SWAP_PART_NODE" ]; then
 			TMPLSTR_NULLABLE_SWAP_PART_UUID="\"$(basename "$NODE")\""
+			TMPLSTR_SWAP_PART_UUID_LIST="[ \"$(basename "$NODE")\" ]"
 		fi
 	done
 	if [ "$TMPLSTR_NULLABLE_SWAP_PART_UUID" == "" ]; then
@@ -240,8 +242,10 @@ if [ "$SWAP_PART_NODE" != "" ]; then
 	fi
 else
 	TMPLSTR_NULLABLE_SWAP_PART_UUID="null"
+	TMPLSTR_SWAP_PART_UUID_LIST="[ ]"
 fi
 export TMPLSTR_NULLABLE_SWAP_PART_UUID
+export TMPLSTR_SWAP_PART_UUID_LIST
 
 envsubst < "./templates/$TEMPLATE_FILE" > "/mnt/etc/nixos/machines/$MACHINE_HOSTNAME.nix"
 echo "Templated /mnt/etc/nixos/machines/$MACHINE_HOSTNAME.nix. Goodbye!"

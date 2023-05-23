@@ -33,7 +33,10 @@ in
     boot.loader.grub = {
       enable = true;
       version = 2;
-      device = cfg.bootDiskNode;
+      mirroredBoots = [ {
+        devices = [ cfg.bootDiskNode ];
+        path = "/boot0";
+      } ];
     };
 
     boot = {
@@ -44,7 +47,7 @@ in
       kernelModules = [ "kvm-intel" ];
     };
 
-    fileSystems."/boot" = {
+    fileSystems."/boot0" = {
       device = "/dev/disk/by-uuid/${cfg.bootPartUUID}";
       fsType = "vfat";
     };

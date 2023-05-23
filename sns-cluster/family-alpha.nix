@@ -34,6 +34,10 @@ in
       loader.grub = {
         enable = true;
         version = 2;
+        mirroredBoots = [ {
+          devices = [ cfg.bootDiskNode ];
+          path = "/boot0";
+        } ];
         device = cfg.bootDiskNode;
         # TODO: SOL serial port & baudrate?
         # extraConfig = ''
@@ -52,7 +56,7 @@ in
       # kernelParams = [ "console=ttyS0,115200" ];
     };
 
-    fileSystems."/boot" = {
+    fileSystems."/boot0" = {
       device = "/dev/disk/by-uuid/${cfg.bootPartUUID}";
       fsType = "vfat";
     };

@@ -20,9 +20,11 @@
     family.beta = {
       enable = true;
 
-      bootDiskNode = "${TMPLSTR_BOOT_DISK_NODE}";
-      bootPartUUID = "${TMPLSTR_BOOT_PART_UUID}";
-      swapPartUUID = ${TMPLSTR_NULLABLE_SWAP_PART_UUID};
+      bootDisks = [ {
+        diskNode = "${TMPLSTR_BOOT_DISK_NODE}";
+        partUUID = "${TMPLSTR_BOOT_PART_UUID}";
+      } ];
+      swapPartUUIDs = ${TMPLSTR_SWAP_PART_UUID_LIST};
     };
   };
 

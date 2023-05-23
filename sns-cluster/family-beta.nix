@@ -11,20 +11,26 @@ in
       default = false;
     };
 
-    bootDiskNode = lib.mkOption {
-      type = lib.types.str;
-    };
+    bootDisks = lib.mkOption {};
 
-    bootPartUUID = lib.mkOption {
-      type = lib.types.str;
-    };
-
-    swapPartUUID = lib.mkOption {
-      type = lib.types.str;
+    swapPartUUIDs = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
     };
   };
 
-  config = lib.mkIf (config.sns-machine.enable && cfg.enable) ({
+  config = lib.mkIf (config.sns-machine.enable && cfg.enable) (let
+
+    enumeratedBootDisks =
+      lib.imap0 (i: bootDiskCfg:
+        bootDiskCfg // { idx = i; mountpoint = "/boot${toString i}"; }
+      ) (builtins.sort (a: b:
+        # Ensure that the boot devices have a consistent order, based
+        # on their UUIDs. We match the disks to mountpoints below, and
+        # don't want Grub to get confused.
+        builtins.lessThan a.partUUID b.partUUID) cfg.bootDisks);
+
+  in
+  {
     hardware = {
       enableRedistributableFirmware = true;
       cpu.intel.updateMicrocode = true;
@@ -34,7 +40,11 @@ in
       loader.grub = {
         enable = true;
         version = 2;
-        device = cfg.bootDiskNode;
+        mirroredBoots =
+          builtins.map (bootDiskCfg: {
+            devices = [ bootDiskCfg.diskNode ];
+            path = bootDiskCfg.mountpoint;
+          }) enumeratedBootDisks;
         extraConfig = ''
           serial --unit=0 --speed=115200
           terminal_input serial console
@@ -49,13 +59,19 @@ in
       kernelParams = [ "console=ttyS0,115200" ];
     };
 
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-uuid/${cfg.bootPartUUID}";
-      fsType = "vfat";
-    };
+    fileSystems =
+      builtins.listToAttrs (
+        builtins.map (bootDiskCfg:
+          lib.nameValuePair bootDiskCfg.mountpoint {
+            device = "/dev/disk/by-uuid/${bootDiskCfg.partUUID}";
+            fsType = "vfat";
+          }
+        ) enumeratedBootDisks
+      );
 
-    swapDevices = [ {
-      device = "/dev/disk/by-uuid/${cfg.swapPartUUID}";
-    } ];
+    swapDevices =
+      builtins.map (partUUID: {
+        device = "/dev/disk/by-uuid/${partUUID}"; })
+        cfg.swapPartUUIDs;
   });
 }

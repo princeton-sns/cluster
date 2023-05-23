@@ -30,9 +30,18 @@ in
     family.beta = {
       enable = true;
 
-      bootDiskNode = "/dev/disk/by-id/ata-WDC_WD1003FBYX-01Y7B0_WD-WCAW30746204";
-      bootPartUUID = "6C32-5AFA";
-      swapPartUUID = "9463b40d-f607-416c-af0c-d95c9ff1eb6f";
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/ata-WDC_WD1003FBYX-01Y7B0_WD-WCAW30746204";
+        partUUID = "6C32-5AFA";
+      } {
+        diskNode = "/dev/disk/by-id/ata-WDC_WD1003FBYX-01Y7B0_WD-WCAW30858349";
+        partUUID = "A9E0-4E85";
+      } ];
+
+      swapPartUUIDs = [
+        "9463b40d-f607-416c-af0c-d95c9ff1eb6f"
+        "f73cb467-270f-405a-a406-3d64808b68b8"
+      ];
     };
   };
 
