@@ -206,7 +206,7 @@ TMPLSTR_BOOT_DISK_NODE="/dev/$BOOT_DEV_NODE"
 for NODE in /dev/disk/by-id/*; do
 	if [ "$(readlink -f "$NODE")" == "/dev/$BOOT_DEV_NODE" ]; then
 		echo "$NODE matches for bootdev!"
-		TMPLSTR_BOOT_DISK_NODE="$(readlink -f "$NODE")"
+		TMPLSTR_BOOT_DISK_NODE="$NODE"
 	fi
 done
 if [ "$TMPLSTR_BOOT_DISK_NODE" == "/dev/$BOOT_DEV_NODE" ]; then
