@@ -127,6 +127,9 @@ in
     # password-less SUDO and SSH keys, so this is not an issue in our case.
     # users.allowNoPasswordLogin = true;
 
+    # Enable the firewall (OpenSSH is always automatically allowed):
+    networking.firewall.enable = true;
+
     # ---------- Bootloader Configuration --------------------------------------
 
     # Provide an iPXE shell as an "escape" hatch to load a NixOS installer:
