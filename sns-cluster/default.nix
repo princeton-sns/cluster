@@ -283,5 +283,7 @@ in
     system.activationScripts."backup-ssh-zfs-permissions" = ''
       ${pkgs.zfs}/bin/zfs allow backup-ssh bookmark,hold,send,snapshot,mount,destroy rpool/state
     '';
+
+    powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   });
 }
