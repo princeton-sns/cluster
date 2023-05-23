@@ -130,6 +130,9 @@ in
     # Enable the firewall (OpenSSH is always automatically allowed):
     networking.firewall.enable = true;
 
+    # Save energy when system idling:
+    powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
+
     # ---------- Bootloader Configuration --------------------------------------
 
     # Provide an iPXE shell as an "escape" hatch to load a NixOS installer:
@@ -292,6 +295,5 @@ in
       '';
     };
 
-    powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   });
 }
