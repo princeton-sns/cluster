@@ -282,9 +282,12 @@ in
 
     users.groups.backup-ssh = {};
 
-    system.activationScripts."backup-ssh-zfs-permissions" = ''
-      ${pkgs.zfs}/bin/zfs allow backup-ssh bookmark,hold,send,snapshot,mount,destroy rpool/state
-    '';
+    system.activationScripts."backup-ssh-zfs-permissions" = {
+      deps = [ "users" "groups" ];
+      text = ''
+        ${pkgs.zfs}/bin/zfs allow backup-ssh bookmark,hold,send,snapshot,mount,destroy rpool/state
+      '';
+    };
 
     powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   });
