@@ -40,8 +40,10 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICCReHVoVeXfqK8bbIcotwhUBrt7u2T6IQNKMysmJF42"
   ];
 
-  users.users.leons = { isNormalUser = true; };
-  users.users.alevy = { isNormalUser = true; };
+  users.users.leons = {
+    isNormalUser = true;
+    contactEmail = "leon@is.currently.online";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

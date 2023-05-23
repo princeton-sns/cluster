@@ -28,9 +28,21 @@ in
 
   options.users.users = lib.mkOption {
     type = lib.types.attrsOf (lib.types.submodule ({ name, config, ... }: {
-      options.snsZFSPersistHome = lib.mkOption {
-        type = lib.types.bool;
-        default = name != "root" && config.isNormalUser;
+      options = {
+        snsZFSPersistHome = lib.mkOption {
+          type = lib.types.bool;
+          default = name != "root" && config.isNormalUser;
+        };
+
+        # TODO: privacy concerns. Is there some way to protect this, but still
+        # force everyone to be reachable, and quickly be able to build a list of
+        # emails for a set of machines?
+        contactEmail = lib.mkOption {
+          # We allow null here, but have an assertion for non-null below. This
+          # allows us to generate a nicer error message.
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+        };
       };
     }));
   };
@@ -42,22 +54,36 @@ in
   };
 
   config = lib.mkIf cfg.enable ({
-    assertions = [ {
-      assertion = (lib.length (
-        lib.filter (en: en) (
-          lib.mapAttrsToList (
-            _familyName: familyCfg: familyCfg.enable)
-            cfg.family))) <= 1;
-      message = "At most one machine family can be enabled at a time.";
-    } {
-      assertion = lib.length (
-        lib.attrNames (
-          lib.filterAttrs (user: userCfg:
-            userCfg.home != "/home/${user}")
-            zfsHomeUsers)) == 0;
+    assertions = [ (let
+      machineFamiliesEnabled = lib.attrNames (
+        lib.filterAttrs (family: familyCfg:
+          familyCfg.enable) cfg.family);
+    in {
+      assertion = lib.length machineFamiliesEnabled  <= 1;
+      message = "At most one machine family can be enabled at a time. "
+                + "Enabled families: ${
+                  lib.concatStringsSep ", " machineFamiliesEnabled}.";
+    }) (let
+      invalidHomeUsers = lib.attrNames (
+        lib.filterAttrs (user: userCfg:
+          userCfg.home != "/home/${user}")
+          zfsHomeUsers);
+    in {
+      assertion = lib.length invalidHomeUsers == 0;
       message = "Users with snsZFSPersistHome must have their home directory "
-        + "set to \"/home/$USER\"";
-    } ];
+                + "set to \"/home/$USER\". Check ${
+                  lib.concatStringsSep ", " invalidHomeUsers}";
+    }) (let
+      noContactUsers = lib.attrNames (
+        lib.filterAttrs (user: userCfg:
+          userCfg.isNormalUser && userCfg.contactEmail == null)
+          config.users.users);
+    in {
+      assertion = lib.length noContactUsers == 0;
+      message = "Users must have a valid contactEmail configured and be "
+                + "reachable at this address. Check ${
+                  lib.concatStringsSep ", " noContactUsers}.";
+    }) ];
 
     # ---------- Misc System Configuration -------------------------------------
     #
