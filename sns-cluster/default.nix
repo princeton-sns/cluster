@@ -295,5 +295,23 @@ in
       '';
     };
 
+    # ---------- Monitoring ----------------------------------------------------
+
+    services.prometheus.exporters.node = {
+      enable = true;
+      enabledCollectors = [
+        # Disabled by default, this is interesting to diagnose performance
+        # bottlenecks caused by e.g., network activity:
+        "interrupts"
+      ];
+      openFirewall = false;
+      listenAddress = "0.0.0.0";
+    };
+
+    # Add rule to the firewall to give SNS26 access to the node exporter:
+    networking.firewall.extraCommands = ''
+      iptables -A INPUT -p tcp -s 128.112.7.126 --dport ${
+        toString config.services.prometheus.exporters.node.port} -j ACCEPT
+    '';
   });
 }
