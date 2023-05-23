@@ -122,6 +122,22 @@ in
     # password-less SUDO and SSH keys, so this is not an issue in our case.
     # users.allowNoPasswordLogin = true;
 
+    # ---------- Bootloader Configuration --------------------------------------
+
+    # Provide an iPXE shell as an "escape" hatch to load a NixOS installer:
+    boot.loader.grub.ipxe.shell = ''
+      #!ipxe
+      shell
+    '';
+
+    # Configure iPXE to expose its console on the SOL port:
+    boot.loader.grub.extraFiles."ipxe.lkrn" = lib.mkForce
+      "${pkgs.ipxe.overrideAttrs (_: {
+        preConfigure = ''
+          sed -i 's|^//\(#define.*CONSOLE_SERIAL\)|\1|g' src/config/console.h
+        '';
+      })}/ipxe.lkrn";
+
     # ---------- ZFS Transient Root File System Support ------------------------
 
     boot.initrd.postDeviceCommands = ''
