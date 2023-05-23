@@ -66,8 +66,11 @@ in
 
     time.timeZone = "America/New_York";
 
+    # Provide a selection of generally useful packages by default:
     environment.systemPackages = with pkgs; [
-      vim wget htop nload tmux
+      vim wget bc htop iotop tmux gitAndTools.gitFull gitAndTools.git-annex
+      zip unzip nload mtr nmap sipcalc gnupg rclone pciutils usbutils
+      nix-prefetch-git
 
       # TODO: move into environment for syncoid command
       lzop mbuffer
