@@ -97,8 +97,10 @@ in
     # --> Either one of the following must be set:
 
     # Set a hashed root password:
-    users.users.root.hashedPassword =
+    users.users.root.initialHashedPassword =
       "$6$zXOHOCP4zSZWJQgY$6vFWG3SOSzZf88aTuOeZ5mz1ep0XB.PFy9Hw66rlm58BIvtr6lLv4Q2rq.72loPJc1f6PCEHUqJ.1ZFX.Fjro1";
+    users.users.root.hashedPassword =
+      config.users.users.root.initialHashedPassword;
 
     # Don't set a root password requires setting the `allowNoPasswordLogin`
     # option.  It is named rather unfortunate: it does not mean that a user can
