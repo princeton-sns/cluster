@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 
 let
-  cfg = config.sns-machine.family.gamma;
+  cfg = config.sns-machine.family.beta;
 
 in
 {
-  options.sns-machine.family.gamma = {
+  options.sns-machine.family.beta = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -30,18 +30,23 @@ in
       cpu.intel.updateMicrocode = true;
     };
 
-    boot.loader.grub = {
-      enable = true;
-      version = 2;
-      device = cfg.bootDiskNode;
-    };
-
     boot = {
+      loader.grub = {
+        enable = true;
+        version = 2;
+        device = cfg.bootDiskNode;
+        extraConfig = ''
+          serial --unit=0 --speed=115200
+          terminal_input serial console
+          terminal_output serial console
+        '';
+      };
+
       initrd.availableKernelModules = [
-        "ehci_pci" "ahci" "isci" "mpt3sas" "usbhid" "usb_storage" "sd_mod"
-        "sr_mod"
+        "uhci_hcd" "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod"
       ];
       kernelModules = [ "kvm-intel" ];
+      kernelParams = [ "console=ttyS0,115200" ];
     };
 
     fileSystems."/boot" = {
