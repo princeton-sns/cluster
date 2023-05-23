@@ -1,5 +1,15 @@
 { config, pkgs, lib, ... }:
 
+let
+  backupHosts = [
+    # alpha machines
+    # beta machines
+    "sns26"
+    # gamma machines
+    "sns62"
+  ];
+
+in
 {
   imports = [
     ../sns-cluster
@@ -24,6 +34,28 @@
       bootPartUUID = "6C32-5AFA";
       swapPartUUID = "9463b40d-f607-416c-af0c-d95c9ff1eb6f";
     };
+  };
+
+  fileSystems."/var/lib/syncoid" = {
+    device = "/var/state/syncoid-home";
+    fsType = "none";
+    options = [ "bind" ];
+  };
+
+  services.syncoid = {
+    enable = true;
+    sshKey = "/var/lib/syncoid/.ssh/id_ed25519";
+    commands = let
+      hostCommand = hostname: {
+        # Created beforehand using:
+        # zfs create -o mountpoint=none -o compression=lz4 rpool/cluster-backups
+        target = "rpool/cluster-backups/${hostname}";
+        source = "backup-ssh@${hostname}.cs.princeton.edu:rpool/state";
+        recursive = true;
+        extraArgs = [ "--keep-sync-snap" ];
+      };
+    in
+      lib.genAttrs backupHosts hostCommand;
   };
 
   # This value determines the NixOS release from which the default
