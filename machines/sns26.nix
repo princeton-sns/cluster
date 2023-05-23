@@ -45,6 +45,8 @@ in
     };
   };
 
+  # ---------- ZFS Backup Server -----------------------------------------------
+
   fileSystems."/var/lib/syncoid" = {
     device = "/var/state/syncoid-home";
     fsType = "none";
@@ -65,6 +67,32 @@ in
       };
     in
       lib.genAttrs backupHosts hostCommand;
+  };
+
+  # ---------- Prometheus Monitoring Server ------------------------------------
+
+  fileSystems."/var/lib/prometheus" = {
+    device = "rpool/state/prometheus-state";
+    fsType = "zfs";
+  };
+
+  services.prometheus = {
+    enable = true;
+    stateDir = "prometheus";
+    webExternalUrl = "http://sns26.cs.princeton.edu:${
+      toString config.services.prometheus.port}/";
+
+    scrapeConfigs = [ {
+      job_name = "cluster_node";
+      scheme = "http";
+      metrics_path = "/metrics";
+      static_configs = [ {
+        targets = [
+          "sns26.cs.princeton.edu:9100"
+          "sns62.cs.princeton.edu:9100"
+        ];
+      } ];
+    } ];
   };
 
   # This value determines the NixOS release from which the default
