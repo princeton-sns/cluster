@@ -98,7 +98,7 @@ in
     environment.systemPackages = with pkgs; [
       vim wget bc htop iotop tmux gitAndTools.gitFull gitAndTools.git-annex
       zip unzip nload mtr nmap sipcalc gnupg rclone pciutils usbutils
-      nix-prefetch-git
+      nix-prefetch-git ipmitool
 
       # TODO: move into environment for syncoid command
       lzop mbuffer
