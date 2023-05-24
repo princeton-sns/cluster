@@ -57,4 +57,10 @@ in {
     extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "leochanj105";
   };
+
+  users.users.leons = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
+  };
 }
