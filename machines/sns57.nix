@@ -1,31 +1,38 @@
-# @theanoli using to run simulations that require lots of memory.
+{ config, pkgs, lib, ... }:
 
-{ config, pkgs, ... }:
-
-let
-  hostname = "sns57";
-  common = (import ./common.nix) { hostname = hostname; };
-  utils = import ../utils;
-in {
-
-  # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git
+{
+  imports = [
+    ../sns-cluster
   ];
 
-  programs.mosh.enable = true;
+  networking = {
+    hostId = "292ab2b1";
+    hostName = "sns57";
 
-  virtualisation.docker.enable = true;
-  
-  services.openssh.forwardX11 = true;
-
-  users.users.theano = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+    interfaces."enp1s0f0" = {
+      useDHCP = true;
+    };
   };
+
+  sns-machine = {
+    enable = true;
+
+    family.beta = {
+      enable = true;
+
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee205724b8a";
+        partUUID = "3A45-C519";
+      } ];
+      swapPartUUIDs = [ "1aea070e-bcfa-439c-baeb-b23869be1120" ];
+    };
+  };
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.11"; # Did you read the comment?
 }

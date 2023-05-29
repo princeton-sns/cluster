@@ -1,45 +1,38 @@
-# Configured as a workstation for @lschuermann
+{ config, pkgs, lib, ... }:
 
-{ config, pkgs, ... }:
-
-let
-  hostname = "sns45";
-  common = (import ./common.nix) { hostname = hostname; };
-  utils = import ../utils;
-in {
-
-  # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    wget vim htop tmux nload iftop dnsutils gitAndTools.gitFull gnupg
-    gitAndTools.git-annex mtr bc zip unzip nmap nix-prefetch-git pdftk
-    imagemagick ghostscript rclone
+{
+  imports = [
+    ../sns-cluster
   ];
 
-  programs.mosh.enable = true;
+  networking = {
+    hostId = "18e30b23";
+    hostName = "sns45";
 
-  users.mutableUsers = false;
-
-  users.users.leons = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
+    interfaces."enp1s0f0" = {
+      useDHCP = true;
+    };
   };
 
-  users.users.jenn = {
-    isNormalUser = true;
-    openssh.authorizedKeys.keys =
-      (utils.githubSSHKeys "jl3953")
-      ++ [ 
-		"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILIeQ6wf0yUvjtkM5S9LMbcvvSjl3iYnxlYHPCgoRvSK JuiceSSH" 
-		"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIVkRUb04W5PGOi22YLMYsn9/Xs+IAsM+dzuiayuQ3fO jl87@princeton.edu"
-	];
+  sns-machine = {
+    enable = true;
+
+    family.beta = {
+      enable = true;
+
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee25abfe404";
+        partUUID = "BFC9-B709";
+      } ];
+      swapPartUUIDs = [ "43729736-39c3-4895-abc2-bb7f698b0d96" ];
+    };
   };
 
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOD4XspKe2E5BhBmx+GtRHdRR72+Q7wC7nFHbDj1VVzJ lschuermann/silicon/sns-nixbuild"
-  ];
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.11"; # Did you read the comment?
 }

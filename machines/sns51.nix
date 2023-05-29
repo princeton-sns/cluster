@@ -1,40 +1,38 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-let
-  hostname = "sns51";
-  common = (import ./common.nix) { hostname = hostname; };
-  utils = import ../utils;
-in {
-
-  # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git
+{
+  imports = [
+    ../sns-cluster
   ];
 
-  programs.mosh.enable = true;
+  networking = {
+    hostId = "f30dbdc9";
+    hostName = "sns51";
 
-  virtualisation.docker.enable = true;
-
-  # For Leopard caching project
-  users.users.theano = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "theanoli";
+    interfaces."enp1s0f0" = {
+      useDHCP = true;
+    };
   };
 
-  users.users.nkaas = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "nickaashoek";
+  sns-machine = {
+    enable = true;
+
+    family.beta = {
+      enable = true;
+
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee2b024b8e4";
+        partUUID = "89AB-A4B9";
+      } ];
+      swapPartUUIDs = [ "c57edc5d-3854-43ec-8722-4891daca0e6f" ];
+    };
   };
 
-  users.users.leons = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
-  };
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.11"; # Did you read the comment?
 }
