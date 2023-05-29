@@ -54,7 +54,7 @@ in {
 
       # forward all Matrix API calls to the synapse Matrix homeserver
       locations."/_matrix" = {
-        proxyPass = "http://[::1]:8448"; # without a trailing /
+        proxyPass = "http://sns26.cs.princeton.edu:8448"; # without a trailing /
 
         # Element iOS will send a request to cause Synapse to redirect to the
         # SSO provider with a trailing slash:
@@ -100,7 +100,7 @@ in {
   };
 
   services.matrix-synapse = {
-    enable = true;
+    enable = false;
     package = pkgs.matrix-synapse.overrideDerivation (oldAttrs: {
       patches = [./matrix-synapse-localpart.patch];
       doCheck = false;
