@@ -142,4 +142,10 @@ in {
     openssh.authorizedKeys.keys = utils.githubSSHKeys "ravinet";
   };
 
+  users.users.leons = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
+  };
+
 }
