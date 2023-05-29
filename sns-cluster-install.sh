@@ -172,6 +172,11 @@ done
 echo "--> Cloning the SNS cluster configuration to /mnt/etc/nixos and"
 echo "	creating a symlink for configuration.nix to machines/$MACHINE_HOSTNAME.nix"
 git clone "$(readlink -f .)" /mnt/etc/nixos/
+pushd /mnt/etc/nixos
+git remote set-url origin https://github.com/princeton-sns/cluster.git
+git config user.name "Anonymous Tiger"
+git config user.email "hostmaster@sns.cs.princeton.edu"
+popd
 ln -s "./machines/$MACHINE_HOSTNAME.nix" /mnt/etc/nixos/configuration.nix
 
 TEMPLATE_CORRECT=0
