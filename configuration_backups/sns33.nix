@@ -1,15 +1,13 @@
 { config, pkgs, lib, ... }:
 
-let
-  remoteConfig = import (builtins.fetchTarball https://github.com/princeton-sns/cluster/archive/neo-cluster.tar.gz);
-in {
+{
   imports = [
-    remoteConfig.sns-cluster
-    remoteConfig.machines.sns33
+    ../sns-cluster
   ];
 
   networking = {
     hostId = "0e5eb4d2";
+    hostName = "sns33";
 
     interfaces."enp1s0f0" = {
       useDHCP = true;
