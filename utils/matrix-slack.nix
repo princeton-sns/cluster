@@ -45,6 +45,7 @@ in {
   };
   
   systemd.services.matrix-appservice-slack = {
+    enable = false;
     description = "matrix-appservice-slack";
     wants = [ "network.target" "postgresql.service" ] ;
     after = [ "network.target" "postgresql.service" ] ;
