@@ -71,6 +71,14 @@ in
       lib.genAttrs snsHosts hostCommand;
   };
 
+  systemd.services = builtins.listToAttrs (builtins.map (h: lib.nameValuePair "syncoid-${h}" {
+    serviceConfig = {
+      ExecStartPre = lib.mkBefore [
+	"-+${pkgs.zfs}/bin/zfs create -o mountpoint=none rpool/cluster-backups/${h}"
+      ];
+    };
+  }) snsHosts);
+
   # ---------- Prometheus Monitoring Server ------------------------------------
 
   fileSystems."/var/lib/prometheus" = {
