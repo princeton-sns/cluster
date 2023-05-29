@@ -1,10 +1,12 @@
 { config, pkgs, lib, ... }:
 
 let
-  backupHosts = [
+  snsHosts = [
     # alpha machines
     # beta machines
-    "sns26"
+    "sns26" "sns29" "sns30" "sns31" "sns32" "sns33" "sns35" "sns38" "sns40"
+    "sns41" "sns43" "sns44" "sns45" "sns46" "sns47" "sns50" "sns51" "sns52"
+    "sns54" "sns55" "sns57" "sns62"
     # gamma machines
     "sns62"
   ];
@@ -66,7 +68,7 @@ in
         extraArgs = [ "--keep-sync-snap" ];
       };
     in
-      lib.genAttrs backupHosts hostCommand;
+      lib.genAttrs snsHosts hostCommand;
   };
 
   # ---------- Prometheus Monitoring Server ------------------------------------
@@ -87,10 +89,10 @@ in
       scheme = "http";
       metrics_path = "/metrics";
       static_configs = [ {
-        targets = [
-          "sns26.cs.princeton.edu:9100"
-          "sns62.cs.princeton.edu:9100"
-        ];
+        targets =
+          builtins.map
+            (hostname: "${hostname}.cs.princeton.edu:9100")
+            snsHosts;
       } ];
     } ];
   };
