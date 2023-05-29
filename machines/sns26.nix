@@ -6,7 +6,7 @@ let
     # beta machines
     "sns26" "sns29" "sns30" "sns31" "sns32" "sns33" "sns35" "sns38" "sns40"
     "sns41" "sns43" "sns44" "sns45" "sns46" "sns47" "sns50" "sns51" "sns52"
-    "sns54" "sns55" "sns57" "sns62"
+    "sns54" "sns55" "sns57" "sns58" "sns62"
     # gamma machines
     "sns62"
   ];
