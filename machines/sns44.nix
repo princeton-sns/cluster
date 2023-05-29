@@ -1,77 +1,38 @@
-# @yuetan uses this machine as a testbed for securefaas project
+{ config, pkgs, lib, ... }:
 
-{ config, pkgs, ... }:
-
-let
-  hostname = "sns44";
-  common = (import ./common.nix) { hostname = hostname; };
-  utils = import ../utils;
-  snapfaasSrc = pkgs.fetchFromGitHub {
-    owner = "princeton-sns";
-    repo = "snapfaas";
-    rev = "9791be9d108dd45abf50d9a62681d7a0f61613d5";
-    sha256 = "sha256-ZJS7GDW7lBILrMKrKXxLAw5gjKunSai27RO3oZvJAn4=";
-  };
-  snapfaas = (import snapfaasSrc { inherit pkgs; release = false; }).snapfaas;
-in {
-
-  # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git
-    snapfaas lkl lmdb python39Full e2fsprogs gnumake wget
-    vim tmux
+{
+  imports = [
+    ../sns-cluster
   ];
 
-  # Expose port for development snapfaas webhook server
-  networking.firewall.allowedTCPPorts = [ 8080 ];
+  networking = {
+    hostId = "fe81c10c";
+    hostName = "sns44";
 
-  fileSystems."/nfs/home" = {
-    device = "adam-new.cs.princeton.edu:/home";
-    fsType = "nfs4";
+    interfaces."enp1s0f1" = {
+      useDHCP = true;
+    };
   };
 
+  sns-machine = {
+    enable = true;
 
-  programs.mosh.enable = true;
+    family.beta = {
+      enable = true;
 
-  virtualisation.docker.enable = true;
-
-  users.users.yuetan = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "tan-yue";
-  };
-  
-  users.users.alevy = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
-  };
-  
-  users.users.cherrypiejam = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" "docker" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee25acc6d1c";
+        partUUID = "D6A2-8C75";
+      } ];
+      swapPartUUIDs = [ "28b6f349-0383-4e30-a1ed-8e9856743111" ];
+    };
   };
 
-  users.users.atli = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" "docker" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "ATLi2001";
-  };
-  
-  users.users.scaspin = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "kvm" "docker" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "scaspin";
-  };
-
-  users.users.leons = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
-  };
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.11"; # Did you read the comment?
 }

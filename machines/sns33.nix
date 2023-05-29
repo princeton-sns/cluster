@@ -1,66 +1,38 @@
-# Configured as a workstation for @lei
+{ config, pkgs, lib, ... }:
 
-{ config, pkgs, ... }:
-
-let
-  hostname = "sns33";
-  common = (import ./common.nix) { hostname = hostname; };
-  utils = import ../utils;
-  kubeMasterIP = "10.1.1.2";
-  kubeMasterHostname = "api.kube";
-  kubeMasterAPIServerPort = 6443;
-in {
-
-  # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ];
-
-  networking.extraHosts = "${kubeMasterIP} ${kubeMasterHostname}";
-
-  services.kubernetes = {
-    roles = ["master" "node"];
-    masterAddress = kubeMasterHostname;
-    apiserverAddress = "https://${kubeMasterHostname}:${toString kubeMasterAPIServerPort}";
-    easyCerts = true;
-    apiserver = {
-      securePort = kubeMasterAPIServerPort;
-      advertiseAddress = kubeMasterIP;
-    };
-
-    # use coredns
-    addons.dns.enable = true;
-    
-    # needed if you use swap
-    kubelet.extraOpts = "--fail-swap-on=false";
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    git zip unzip
-    vim tmux wget docker-compose kubectl kompose kubernetes helm
+{
+  imports = [
+    ../sns-cluster
   ];
 
-  programs.mosh.enable = true;
+  networking = {
+    hostId = "0e5eb4d2";
+    hostName = "sns33";
 
-  virtualisation.docker.enable = true;
-
-  users.mutableUsers = false;
-
-  users.users.lei = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "geraldleizhang";
+    interfaces."enp1s0f0" = {
+      useDHCP = true;
+    };
   };
 
-  users.users.leochanj = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "leochanj105";
+  sns-machine = {
+    enable = true;
+
+    family.beta = {
+      enable = true;
+
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee2b01fe0fe";
+        partUUID = "0E6B-35DA";
+      } ];
+      swapPartUUIDs = [ "777dd6c5-d51e-40c0-b3ff-7e4b312d7185" ];
+    };
   };
 
-  users.users.leons = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
-  };
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "22.11"; # Did you read the comment?
 }

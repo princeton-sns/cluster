@@ -1,35 +1,38 @@
-# Configured as a workstation for @linanqinqin
+{ config, pkgs, lib, ... }:
 
-{ config, pkgs, ... }:
-
-let
-  hostname = "sns49";
-  common = (import ./common.nix) { hostname = hostname; };
-  utils = import ../utils;
-in {
-
-  # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
+{
+  imports = [
+    ../sns-cluster
   ];
 
-  programs.mosh.enable = true;
+  networking = {
+    hostId = "fa526a52";
+    hostName = "sns49";
 
-  users.mutableUsers = false;
-
-  users.users.linanqinqin = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9XMuiS7A+rQq2Q7/wIwqFCdbBEI0vXEoLU0DCwPl1KAfvdMM1w46y6+WAv66NMgjDa9wcwjdTBugMdMvWfm6UnEV7XIEbYtK9C9NO4/2gYMcIuMU2KHhoMJ86CIKGrwTDvvmvnFuPdrtIrhH66fg2qPMMUPhlQ93KlFsD+bKdQaKIIewLQaPgECuR/wb8a5qmmpAGdGLMGu+RXVJO71kiPdO999V0g1+pBA1FOqkuUUiE7nYQQfZl5PiaiqnI4PeR5qV1HWOkpNESfdzkrMXG/aa9/sOjl/q3DK6kmAIy0iaqm4V7SWWSz7WCQIXAWfFORdbpMaCtDaRPMShzQY6F linanqinqin@linanqinqindeMacBook-Pro.local
-" ];
+    interfaces."enp1s0f0" = {
+      useDHCP = true;
+    };
   };
 
-  users.users.leons = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "lschuermann";
+  sns-machine = {
+    enable = true;
+
+    family.beta = {
+      enable = true;
+
+      bootDisks = [ {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee2056e671c";
+        partUUID = "1854-B4E0";
+      } ];
+      swapPartUUIDs = [ "6f60a562-e50e-4751-9384-a739cf107b6c" ];
+    };
   };
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "20.09"; # Did you read the comment?
 }

@@ -6,10 +6,10 @@
   ];
 
   networking = {
-    hostId = "c053498f";
-    hostName = "sns29";
+    hostId = "326ac1ae";
+    hostName = "sns46";
 
-    interfaces."enp1s0f0" = {
+    interfaces."enp1s0f1" = {
       useDHCP = true;
     };
   };
@@ -21,10 +21,10 @@
       enable = true;
 
       bootDisks = [ {
-        diskNode = "/dev/disk/by-id/wwn-0x50014ee2056ef57a";
-        partUUID = "419B-AED0";
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee2057821ec";
+        partUUID = "DF1F-1A9A";
       } ];
-      swapPartUUIDs = [ "fbff7844-2d08-402e-bce4-6fd5da1a9136" ];
+      swapPartUUIDs = [ "200dc0d3-d620-4803-8749-0f98deb2c20b" ];
     };
   };
 
