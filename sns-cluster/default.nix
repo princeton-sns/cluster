@@ -79,7 +79,8 @@ in
           userCfg.isNormalUser && userCfg.contactEmail == null)
           config.users.users);
     in {
-      assertion = lib.length noContactUsers == 0;
+      # Disabled for now because of spam concerns
+      assertion = true || lib.length noContactUsers == 0;
       message = "Users must have a valid contactEmail configured and be "
                 + "reachable at this address. Check ${
                   lib.concatStringsSep ", " noContactUsers}.";
