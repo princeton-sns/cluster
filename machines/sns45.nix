@@ -101,7 +101,7 @@ in {
     };
 
     virtualHosts."princeton.systems" = let
-      matrixServerFQDN = "adam.cs.princeton.systems";
+      matrixServerFQDN = "adam.cs.princeton.edu";
     in {
       serverAliases = [ "www.princeton.systems" ];
       forceSSL = true;
