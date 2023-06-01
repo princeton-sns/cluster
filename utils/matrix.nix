@@ -24,7 +24,7 @@ in {
         let
           # use 443 instead of the default 8448 port to unite
           # the client-server and server-server port for simplicity
-          server = { "m.server" = "${fqdn}:443"; };
+          server = { "m.server" = "matrix.princeton.systems:443"; };
         in ''
           add_header Content-Type application/json;
           return 200 '${builtins.toJSON server}';
@@ -32,7 +32,7 @@ in {
       locations."= /.well-known/matrix/client".extraConfig =
         let
           client = {
-            "m.homeserver" =  { "base_url" = "https://${fqdn}"; };
+            "m.homeserver" =  { "base_url" = "https://matrix.princeton.systems"; };
             "m.identity_server" =  { "base_url" = "https://vector.im"; };
           };
         # ACAO required to allow riot-web on any URL to request this json file
