@@ -14,7 +14,12 @@ let
 in
 {
   imports = [
-    ../sns-cluster
+    ../../sns-cluster
+
+    ./sns-matrix-synapse.nix
+    ./sns-matrix-slack.nix
+
+    ./tock-matrix-synapse.nix
   ];
 
   networking = {
@@ -47,6 +52,15 @@ in
     };
   };
 
+  # Allow the backup user to access the `ssdpool0/state` ZFS datasets
+  # as well:
+  system.activationScripts."backup-ssh-zfs-ssdpool0-permissions" = {
+    deps = [ "users" "groups" ];
+    text = ''
+      ${pkgs.zfs}/bin/zfs allow backup-ssh bookmark,hold,send,snapshot,mount,destroy ssdpool0/state
+    '';
+  };
+
   # ---------- ZFS Backup Server -----------------------------------------------
 
   fileSystems."/var/lib/syncoid" = {
@@ -58,7 +72,7 @@ in
   services.syncoid = {
     enable = true;
     sshKey = "/var/lib/syncoid/.ssh/id_ed25519";
-    commands = let
+    commands = (let
       hostCommand = hostname: {
         # Created beforehand using:
         # zfs create -o mountpoint=none -o compression=lz4 rpool/cluster-backups
@@ -68,7 +82,14 @@ in
         extraArgs = [ "--keep-sync-snap" ];
       };
     in
-      lib.genAttrs snsHosts hostCommand;
+      lib.genAttrs snsHosts hostCommand) // {
+      sns26-ssdpool0 = {
+        target = "rpool/cluster-backups/sns26-ssdpool0";
+        source = "backup-ssh@sns26.cs.princeton.edu:ssdpool0/state";
+        recursive = true;
+        extraArgs = [ "--keep-sync-snap" ];
+      };
+    };
   };
 
   systemd.services = builtins.listToAttrs (builtins.map (h: lib.nameValuePair "syncoid-${h}" {
@@ -103,6 +124,38 @@ in
             snsHosts;
       } ];
     } ];
+  };
+
+  # ---------- NGINX Web Server ------------------------------------------------
+
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+  services.nginx.enable = true;
+
+  # Only recommendedProxySettings and recommendedGzipSettings are
+  # strictly required, but the rest make sense as well:
+  services.nginx.recommendedTlsSettings = true;
+  services.nginx.recommendedOptimisation = true;
+  services.nginx.recommendedGzipSettings = true;
+  services.nginx.recommendedProxySettings = true;
+
+  security.acme = {
+    defaults.email = "aalevy@cs.princeton.edu";
+    acceptTerms = true;
+  };
+
+  fileSystems."/var/lib/acme" = {
+    device = "rpool/state/acme-state";
+    fsType = "zfs";
+  };
+
+  # ---------- Shared SSD-backed PostgreSQL server -----------------------------
+
+  services.postgresql.enable = true;
+
+  fileSystems."/var/lib/postgresql" = {
+    device = "ssdpool0/state/postgresql";
+    fsType = "zfs";
   };
 
   # This value determines the NixOS release from which the default

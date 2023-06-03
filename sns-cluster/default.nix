@@ -95,6 +95,8 @@ in
 
     time.timeZone = "America/New_York";
 
+    networking.domain = "cs.princeton.edu";
+
     # Provide a selection of generally useful packages by default:
     environment.systemPackages = with pkgs; [
       vim wget bc htop iotop tmux gitAndTools.gitFull gitAndTools.git-annex

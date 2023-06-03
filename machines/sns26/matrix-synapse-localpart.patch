@@ -1,0 +1,41 @@
+From 6bf63c748019c8cb7d02db4082b845313b3b6c0b Mon Sep 17 00:00:00 2001
+From: Leon Schuermann <leon@is.currently.online>
+Date: Wed, 14 Sep 2022 18:00:05 -0400
+Subject: [PATCH] handlers/cas.py: determine localpart from alt "campusid"
+
+This causes synapse to determine the localpart of users using the last
+string contained in the "campusid" attribute list, if available in the
+CAS response. In practice, this will use a user's email alias, if one
+has been assigned.
+
+Synapse persists mappings from CAS usernames to aliases automatically in
+a table called "user_external_ids". Hence future availability of this
+value will not impact any existing registered users, and the system
+performs fallback onto the NetID in case of a missing or invalid
+"campusid" attribute.
+---
+ synapse/handlers/cas.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/synapse/handlers/cas.py b/synapse/handlers/cas.py
+index 7163af800..32d77edfd 100644
+--- a/synapse/handlers/cas.py
++++ b/synapse/handlers/cas.py
+@@ -344,7 +344,11 @@ class CasHandler:
+                 to redirect to an interstitial page.
+         """
+         # Note that CAS does not support a mapping provider, so the logic is hard-coded.
+-        localpart = map_username_to_mxid_localpart(cas_response.username)
++        if "campusid" in cas_response.attributes \
++           and type(cas_response.attributes["campusid"]) == list:
++            localpart = map_username_to_mxid_localpart(next(filter(lambda cid: type(cid) == str and cid != cas_response.username, cas_response.attributes["campusid"]), cas_response.username))
++        else:
++            localpart = map_username_to_mxid_localpart(cas_response.username)
+ 
+         async def cas_response_to_user_attributes(failures: int) -> UserAttributes:
+             """
+
+base-commit: 6f80fe1e1bbb6cab3ce605b2023e0488e2d80d52
+-- 
+2.36.2
+
