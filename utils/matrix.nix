@@ -89,7 +89,7 @@ in {
   };
 
   services.postgresql = {
-    enable = true;
+    enable = false;
     initialScript = pkgs.writeText "synapse-init.sql" ''
       CREATE ROLE "matrix-synapse" WITH LOGIN PASSWORD 'synapse';
       CREATE DATABASE "matrix-synapse" WITH OWNER "matrix-synapse"
