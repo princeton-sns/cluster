@@ -42,26 +42,6 @@ in {
           reference = "refs/heads/master";
           out = "sns.cs.princeton.edu";
         };
-        "systems" = {
-          repo = "PrincetonSystems/www";
-          reference = "refs/heads/master";
-          out = "princeton.systems";
-        };
-        "cos316" = {
-          repo = "cos316/cos316-web";
-          reference = "refs/heads/master";
-          out = "cos316";
-        };
-        "os-seminar" = {
-          repo = "princetonsystems/os-seminar";
-          reference = "refs/heads/main";
-          out = "os-seminar";
-        };
-        "praxis" = {
-          repo = "princeton-sns/ideation_station";
-          reference = "refs/heads/main";
-          out = "praxis";
-        };
       };
     };
   };
@@ -79,50 +59,6 @@ in {
         proxyPass = "http://127.0.0.1:1337/sns";
       };
     };
-    virtualHosts."princeton.systems" = {
-      serverAliases = [ "www.princeton.systems" ];
-      forceSSL = true;
-      enableACME = true;
-      root = "/var/lib/deplorable/princeton.systems";
-      locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/systems";
-      };
-    };
-    virtualHosts."cos316.princeton.systems" = {
-      forceSSL = true;
-      enableACME = true;
-      root = "/var/lib/deplorable/cos316";
-      locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/cos316";
-      };
-    };
-    virtualHosts."os-seminar.princeton.systems" = {
-      forceSSL = true;
-      enableACME = true;
-      root = "/var/lib/deplorable/os-seminar";
-      locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/os-seminar";
-      };
-    };
-    virtualHosts."cos561.princeton.systems" = {
-      forceSSL = true;
-      enableACME = true;
-      root = "/home/rnetravali/public_html/COS561";
-    };
-    virtualHosts."ml-video-seminar.princeton.systems" = {
-      forceSSL = true;
-      enableACME = true;
-      root = "/home/rnetravali/public_html/ml-video-seminar";
-    };
-    virtualHosts."praxis.princeton.systems" = {
-      forceSSL = true;
-      enableACME = true;
-      root = "/var/lib/deplorable/praxis";
-      basicAuthFile = "/var/lib/praxis-auth";
-      locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/praxis";
-      };
-    };
   };
 
   security.acme = {
@@ -134,12 +70,6 @@ in {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
-  };
-
-  users.users.rnetravali = {
-    isNormalUser = true;
-    homeMode = "755";
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "ravinet";
   };
 
   users.users.leons = {
