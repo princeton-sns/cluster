@@ -7,7 +7,7 @@ let
 in {
 
   # Import common configurat for all machines (locale, SSHd, updates...)
-  imports = [ common ../utils/deplorable.nix ../utils/matrix.nix ../utils/matrix-slack.nix ];
+  imports = [ common ../utils/deplorable.nix ../utils/matrix.nix ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
