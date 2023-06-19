@@ -33,33 +33,7 @@ in {
   ];
   networking.firewall.allowedUDPPorts = [ 2049 111 4000 4001 ];
 
-  services.deplorable = {
-    enable = true;
-    config = {
-      repos = {
-        "sns" = {
-          repo = "princeton-sns/www";
-          reference = "refs/heads/master";
-          out = "sns.cs.princeton.edu";
-        };
-      };
-    };
-  };
-
   systemd.services.nginx.serviceConfig.ProtectHome = "read-only";
-
-  services.nginx = {
-    enable = true;
-    virtualHosts."sns.cs.princeton.edu" = {
-      serverAliases = [ "www.sns.cs.princeton.edu" ];
-      forceSSL = true;
-      enableACME = true;
-      root = "/var/lib/deplorable/sns.cs.princeton.edu";
-      locations."/.deplorable" = {
-        proxyPass = "http://127.0.0.1:1337/sns";
-      };
-    };
-  };
 
   security.acme = {
     defaults.email = "aalevy@cs.princeton.edu";
