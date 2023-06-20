@@ -1,7 +1,7 @@
 { pkgs, ... }: let
   dataDir = "/var/lib/matrix-appservice-slack";
   registrationFile = "${dataDir}/registration.yaml";
-  matrix_host = "https://adam.cs.princeton.edu";
+  matrix_host = "https://matrix.princeton.systems";
   settings = {
     homeserver = {
       server_name = "princeton.systems";
@@ -19,6 +19,8 @@
       enable = true;
       log_level = "silent";
     };
+    slack_hook_port = 9898;
+    inbound_uri_prefix = "https://slackbot.matrix.princeton.systems/";
   };
   configFile = pkgs.writeText "matrix-appservice-slack-config.json" (builtins.toJSON settings);
 in {
@@ -32,6 +34,16 @@ in {
       name = "slackbridge";
       ensurePermissions = { "DATABASE slackbridge" = "ALL PRIVILEGES"; };
     }];
+  };
+
+  services.nginx.virtualHosts."slackbot.matrix.princeton.systems" = {
+    enableACME = true;
+    forceSSL = true;
+
+    # forward all Matrix API calls to the synapse Matrix homeserver
+    locations."/" = {
+      proxyPass = "http://[::1]:9898"; # without a trailing /
+    };
   };
 
   users.users.slackbridge = {
