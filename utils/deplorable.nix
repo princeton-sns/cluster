@@ -8,8 +8,8 @@ let
   deplorablePkg = import (pkgs.fetchFromGitHub {
     owner = "alevy";
     repo = "deplorable";
-    rev = "23c0b057d1c8457c526bac33be4350d1160098a5";
-    sha256 = "sha256-L1dkJkK71ox9SYVqASkXS0NfBct6ykkHYf82OQMtq0Q=";
+    rev = "9f6dae912e26e1085ce83a9d8ae4378909a69a8";
+    sha256 = "sha256-wk80fATOp6EB3Rcex4xM/kIDmR25dxMNnh4nUHXzxcI=";
   }) {};
   configFile = pkgs.writeText "config.yaml" (builtins.toJSON cfg.config);
 in {
