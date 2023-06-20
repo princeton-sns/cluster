@@ -74,6 +74,7 @@
             search_all_users = true;
             prefer_local_users = true;
           };
+          allow_public_rooms_over_federation = true;
           listeners = [ {
             port = 8449;
             bind_addresses = [ "::1" ];
