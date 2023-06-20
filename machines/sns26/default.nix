@@ -139,8 +139,15 @@ in
   services.nginx.recommendedGzipSettings = true;
   services.nginx.recommendedProxySettings = true;
 
+  services.nginx.virtualHosts.${config.networking.fqdn} = {
+    enableACME = true;
+    locations."/".extraConfig = ''
+      return 404;
+    '';
+  };
+
   security.acme = {
-    defaults.email = "aalevy@cs.princeton.edu";
+    defaults.email = "aalevy@princeton.edu";
     acceptTerms = true;
   };
 
@@ -156,6 +163,17 @@ in
   fileSystems."/var/lib/postgresql" = {
     device = "ssdpool0/state/postgresql";
     fsType = "zfs";
+  };
+
+  # ---------- Send-only Postfix Server ----------------------------------------
+  services.postfix = {
+    enable = true;
+    sslCert = config.security.acme.certs.${config.networking.fqdn}.directory + "/full.pem";
+    sslKey = config.security.acme.certs.${config.networking.fqdn}.directory + "/key.pem";
+    hostname = config.networking.fqdn;
+    config = {
+      inet_interfaces = "loopback-only";
+    };
   };
 
   # This value determines the NixOS release from which the default

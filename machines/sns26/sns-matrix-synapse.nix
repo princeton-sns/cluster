@@ -67,9 +67,6 @@
       #federation_domain_whitelist = [ "matrix.org" "mozilla.org" "nixos.org" "is.currently.online" ];
       server_name = "princeton.systems";
       public_baseurl = "https://matrix.princeton.systems/";
-      #account_threepid_delegates = {
-      #  email = "https://vector.im";
-      #};
       enable_registration = false;
       password_config.enabled = false;
       cas_config = {
@@ -86,6 +83,13 @@
         enabled = false;
         search_all_users = true;
         prefer_local_users = true;
+      };
+      account_threepid_delegates = {
+        msisdn = "https://vector.im";
+      };
+      email = {
+        smtp_host = "sns26.cs.princeton.edu";
+        notif_from = "Princeton Systems %(app)s homeserver <noreply@princeton.systems>";
       };
       listeners = [
         {
