@@ -8,6 +8,19 @@ let
       userCfg.snsZFSPersistHome)
       config.users.users;
 
+  zfsSnapPruneRepo = builtins.fetchGit {
+    url = "https://git.currently.online/leons/zfs-snap-prune.git";
+    rev = "9a77793f5cf4909b4f7b062d385317269f76b437";
+    ref = "refs/heads/main";
+  };
+
+  nixpkgs2305 = let
+    rev = "4f138cd546fd0a32c4c0b576de10b34f120b48ce";
+  in import (builtins.fetchTarball {
+    url = "https://github.com/nixos/nixpkgs/archive/${rev}.tar.gz";
+    sha256 = "sha256:0vkl3xzhpjyrq10q405p3b1d4zgfxpq6x8bv26zyhbwk7my7nzwd";
+  }) {};
+
 in
 {
   imports = [
@@ -15,6 +28,7 @@ in
     ./family-beta.nix
     ./family-gamma.nix
     ./filesystems.nix
+    "${zfsSnapPruneRepo}/module.nix"
   ];
 
   # We use a patched version of the filesystems module, to be able to
@@ -322,6 +336,30 @@ in
       text = ''
         ${pkgs.zfs}/bin/zfs allow backup-ssh bookmark,hold,send,snapshot,mount,destroy rpool/state
       '';
+    };
+
+    services.zfs-snap-prune = {
+      enable = true;
+      mode = "prepare_first";
+      package = nixpkgs2305.callPackage zfsSnapPruneRepo {};
+      jobs = [ {
+        label = "Local rpool state";
+        pool = "rpool";
+        dataset = "/state";
+        recursive = true;
+        snapshot_pattern = "^syncoid_sns26_(.*)$";
+        snapshot_time = {
+          source = "capture_group";
+          capture_group = 1;
+          format = "chrono_fmt";
+          chrono_fmt = "%Y-%m-%d:%H:%M:%S-GMT%:z";
+        };
+        retention_policy = "simple_buckets";
+        retention_config = {
+          latest = 1;
+          daily = 7;
+        };
+      } ];
     };
 
     # ---------- Monitoring ----------------------------------------------------

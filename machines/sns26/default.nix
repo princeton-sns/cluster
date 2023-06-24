@@ -100,6 +100,45 @@ in
     };
   }) snsHosts);
 
+  # Augment the zfs-snap-prune service by also pruning backup snapshots, and
+  # snapshots of the ssdpool0:
+  services.zfs-snap-prune.jobs = [ {
+    label = "SNS cluster backups prune";
+    pool = "rpool";
+    dataset = "/cluster-backups";
+    recursive = true;
+    snapshot_pattern = "^syncoid_sns26_(.*)$";
+    snapshot_time = {
+      source = "capture_group";
+      capture_group = 1;
+      format = "chrono_fmt";
+      chrono_fmt = "%Y-%m-%d:%H:%M:%S-GMT%:z";
+    };
+    retention_policy = "simple_buckets";
+    retention_config = {
+      latest = 1;
+      hourly = 5;
+      daily = 7;
+    };
+  } {
+    label = "Local ssdpool0 state";
+    pool = "ssdpool0";
+    dataset = "/state";
+    recursive = true;
+    snapshot_pattern = "^syncoid_sns26_(.*)$";
+    snapshot_time = {
+      source = "capture_group";
+      capture_group = 1;
+      format = "chrono_fmt";
+      chrono_fmt = "%Y-%m-%d:%H:%M:%S-GMT%:z";
+    };
+    retention_policy = "simple_buckets";
+    retention_config = {
+      latest = 1;
+      daily = 7;
+    };
+  } ];
+
   # ---------- Prometheus Monitoring Server ------------------------------------
 
   fileSystems."/var/lib/prometheus" = {
