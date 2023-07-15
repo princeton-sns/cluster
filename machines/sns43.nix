@@ -23,8 +23,14 @@
       bootDisks = [ {
         diskNode = "/dev/disk/by-id/wwn-0x50014ee2b024c61f";
         partUUID = "3921-AE59";
+      } {
+        diskNode = "/dev/disk/by-id/wwn-0x50014ee25acf9228";
+        partUUID = "6B50-2AFD";
       } ];
-      swapPartUUIDs = [ "29b106d3-4955-4b14-9bc8-3f7686cae714" ];
+      swapPartUUIDs = [
+        "29b106d3-4955-4b14-9bc8-3f7686cae714"
+        "62a185e3-7e7b-49f5-9422-8b19361188ee"
+      ];
     };
   };
 
