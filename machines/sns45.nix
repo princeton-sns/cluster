@@ -71,6 +71,11 @@ in {
           reference = "refs/heads/master";
           out = "cos316";
         };
+        "cos316-f22" = {
+          repo = "cos316/cos316-web";
+          reference = "refs/tags/f22";
+          out = "cos316-f22";
+        };
         "os-seminar" = {
           repo = "princetonsystems/os-seminar";
           reference = "refs/heads/main";
@@ -140,6 +145,9 @@ in {
       forceSSL = true;
       enableACME = true;
       root = "/var/lib/deplorable/cos316";
+      locations."/f22/" = {
+        root = "/var/lib/deplorable/cos316-f22";
+      };
       locations."/.deplorable" = {
         proxyPass = "http://127.0.0.1:1337/cos316";
       };
