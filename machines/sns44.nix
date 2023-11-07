@@ -1,6 +1,12 @@
 { config, pkgs, lib, ... }:
 
-{
+  githubSSHKeys = user:
+    builtins.map (record: record.key) (
+      builtins.fromJSON (
+        builtins.readFile (
+          builtins.fetchurl "https://api.github.com/users/${user}/keys")));
+
+in {
   imports = [
     ../sns-cluster
   ];
@@ -37,19 +43,19 @@
   users.users.yuetan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "tan-yue";
+    openssh.authorizedKeys.keys = githubSSHKeys "tan-yue";
   };
   
   users.users.alevy = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+    openssh.authorizedKeys.keys = githubSSHKeys "alevy";
   };
   
   users.users.cherrypiejam = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" "docker" ];	
-    openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
+    openssh.authorizedKeys.keys = githubSSHKeys "cherrypiejam";
   };
 
   # This value determines the NixOS release from which the default
