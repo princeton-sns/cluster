@@ -34,6 +34,24 @@
     };
   };
 
+  users.users.yuetan = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];	
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "tan-yue";
+  };
+  
+  users.users.alevy = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" ];	
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "alevy";
+  };
+  
+  users.users.cherrypiejam = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "kvm" "docker" ];	
+    openssh.authorizedKeys.keys = utils.githubSSHKeys "cherrypiejam";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
