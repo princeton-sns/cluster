@@ -41,6 +41,8 @@ in {
     };
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   users.users.yuetan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];	
