@@ -43,6 +43,11 @@ in {
 
   security.sudo.wheelNeedsPassword = false;
 
+  fileSystems."/var/lib/faasten" = {
+    device = "rpool/projects/faasten";
+    fsType = "zfs";
+  };
+
   users.users.yuetan = {
     isNormalUser = true;
     extraGroups = [ "wheel" "kvm" ];	
