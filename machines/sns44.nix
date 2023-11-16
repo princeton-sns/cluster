@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
 
+let
   githubSSHKeys = user:
     builtins.map (record: record.key) (
       builtins.fromJSON (
