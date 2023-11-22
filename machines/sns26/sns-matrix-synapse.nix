@@ -109,6 +109,19 @@
     };
   };
 
+   services.nginx.virtualHosts."chat.princeton.systems" = {
+     enableACME = true;
+     forceSSL = true;
+     root = pkgs.element-web.override {
+       conf = {
+         default_server_config."m.homeserver" = {
+           "base_url" = "https://matrix.princeton.systems";
+           "server_name" = "princeton.systems";
+         };
+       };
+     };
+   };
+
   # Temporarily make the matrix-synapse server accessible for proxy_pass from
   # adam.cs.princeton.edu
   networking.firewall.extraCommands = ''
