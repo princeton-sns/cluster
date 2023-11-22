@@ -301,6 +301,7 @@ in
         \:^zfs list -o name,origin -t filesystem,volume -Hr '${zfsPattern}'$:{p;q}
         \:^zfs get -H syncoid\:sync '${zfsPattern}'$:{p;q}
         \:^zfs get -Hpd 1 -t snapshot guid,creation '${zfsPattern}'$:{p;q}
+        \:^zfs get -Hpd 1 -t bookmark guid,creation '${zfsPattern}'$:{p;q}
         \:^zfs snapshot '${zfsPattern}'@${snapNamePattern}$:{p;q}
         \:^zfs send\( -nvP\)\?\( -I ${snapPattern}\)\? ${snapPattern}\( | lzop | mbuffer -q -s 128k -m 16M 2>/dev/null\)\?$:{p;q}
         \:^zfs destroy -r 'rpool/state/home/${zfsPattern}'$:{p;q}
