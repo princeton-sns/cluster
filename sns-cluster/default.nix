@@ -347,7 +347,7 @@ in
         pool = "rpool";
         dataset = "/state";
         recursive = true;
-        snapshot_pattern = "^syncoid_sns26_(.*)$";
+        snapshot_pattern = "^syncoid_adam_(.*)$";
         snapshot_time = {
           source = "capture_group";
           capture_group = 1;
@@ -375,9 +375,9 @@ in
       listenAddress = "0.0.0.0";
     };
 
-    # Add rule to the firewall to give SNS26 access to the node exporter:
+    # Add rule to the firewall to give adam access to the node exporter:
     networking.firewall.extraCommands = ''
-      iptables -A INPUT -p tcp -s 128.112.7.126 --dport ${
+      iptables -A INPUT -p tcp -s 128.112.7.101 --dport ${
         toString config.services.prometheus.exporters.node.port} -j ACCEPT
     '';
   });

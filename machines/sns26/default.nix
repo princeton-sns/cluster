@@ -1,17 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  snsHosts = [
-    # alpha machines
-    # beta machines
-    "sns26" "sns29" "sns30" "sns31" "sns32" "sns33" "sns35" "sns38" "sns40"
-    "sns41" "sns43" "sns44" "sns45" "sns46" "sns47" "sns49" "sns50" "sns51"
-    "sns52" "sns54" "sns55" "sns57" "sns58"
-    # gamma machines
-    "sns62"
-  ];
-
-in
 {
   imports = [
     ../../sns-cluster
@@ -61,71 +49,13 @@ in
     '';
   };
 
-  # ---------- ZFS Backup Server -----------------------------------------------
-
-  fileSystems."/var/lib/syncoid" = {
-    device = "/var/state/syncoid-home";
-    fsType = "none";
-    options = [ "bind" ];
-  };
-
-  services.syncoid = {
-    enable = true;
-    sshKey = "/var/lib/syncoid/.ssh/id_ed25519";
-    commands = (let
-      hostCommand = hostname: {
-        # Created beforehand using:
-        # zfs create -o mountpoint=none -o compression=lz4 rpool/cluster-backups
-        target = "rpool/cluster-backups/${hostname}";
-        source = "backup-ssh@${hostname}.cs.princeton.edu:rpool/state";
-        recursive = true;
-        extraArgs = [ "--keep-sync-snap" ];
-      };
-    in
-      lib.genAttrs snsHosts hostCommand) // {
-      sns26-ssdpool0 = {
-        target = "rpool/cluster-backups/sns26-ssdpool0";
-        source = "backup-ssh@sns26.cs.princeton.edu:ssdpool0/state";
-        recursive = true;
-        extraArgs = [ "--keep-sync-snap" ];
-      };
-    };
-  };
-
-  systemd.services = builtins.listToAttrs (builtins.map (h: lib.nameValuePair "syncoid-${h}" {
-    serviceConfig = {
-      ExecStartPre = lib.mkBefore [
-	"-+${pkgs.zfs}/bin/zfs create -o mountpoint=none rpool/cluster-backups/${h}"
-      ];
-    };
-  }) snsHosts);
-
-  # Augment the zfs-snap-prune service by also pruning backup snapshots, and
-  # snapshots of the ssdpool0:
+  # Augment the zfs-snap-prune service by also pruning snapshots of the ssdpool0:
   services.zfs-snap-prune.jobs = [ {
-    label = "SNS cluster backups prune";
-    pool = "rpool";
-    dataset = "/cluster-backups";
-    recursive = true;
-    snapshot_pattern = "^syncoid_sns26_(.*)$";
-    snapshot_time = {
-      source = "capture_group";
-      capture_group = 1;
-      format = "chrono_fmt";
-      chrono_fmt = "%Y-%m-%d:%H:%M:%S-GMT%:z";
-    };
-    retention_policy = "simple_buckets";
-    retention_config = {
-      latest = 1;
-      hourly = 5;
-      daily = 7;
-    };
-  } {
     label = "Local ssdpool0 state";
     pool = "ssdpool0";
     dataset = "/state";
     recursive = true;
-    snapshot_pattern = "^syncoid_sns26_(.*)$";
+    snapshot_pattern = "^syncoid_adam_(.*)$";
     snapshot_time = {
       source = "capture_group";
       capture_group = 1;
@@ -138,32 +68,6 @@ in
       daily = 7;
     };
   } ];
-
-  # ---------- Prometheus Monitoring Server ------------------------------------
-
-  fileSystems."/var/lib/prometheus" = {
-    device = "rpool/state/prometheus-state";
-    fsType = "zfs";
-  };
-
-  services.prometheus = {
-    enable = true;
-    stateDir = "prometheus";
-    webExternalUrl = "http://sns26.cs.princeton.edu:${
-      toString config.services.prometheus.port}/";
-
-    scrapeConfigs = [ {
-      job_name = "cluster_node";
-      scheme = "http";
-      metrics_path = "/metrics";
-      static_configs = [ {
-        targets =
-          builtins.map
-            (hostname: "${hostname}.cs.princeton.edu:9100")
-            snsHosts;
-      } ];
-    } ];
-  };
 
   # ---------- NGINX Web Server ------------------------------------------------
 
