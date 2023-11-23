@@ -1,0 +1,6 @@
+# Creation rules decide which keys to use to encrypt certain
+# files. The first matching rule wins:
+creation_rules:
+  # By default, encrypt with the admin keys only:
+  - pgp: >-
+      59D593461D9FF82BC1D2A579C7FF8B0BACB5F9DB
