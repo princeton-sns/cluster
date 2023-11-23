@@ -21,9 +21,10 @@
       enable = true;
 
       bootDisks = [ {
-        diskNode = "/dev/disk/by-id/wwn-0x50014ee2b019cff0";
-        partUUID = "AD41-DF10";
-      } {
+      # This disk is broken. It has I/O errors in ZFS and while writing GRUB.
+      #  diskNode = "/dev/disk/by-id/wwn-0x50014ee2b019cff0";
+      #  partUUID = "AD41-DF10";
+      #} {
         diskNode = "/dev/disk/by-id/wwn-0x50014ee2055ec934";
         partUUID = "F658-C441";
       } ];
