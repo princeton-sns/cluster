@@ -145,7 +145,8 @@ function fs_mount() {
 	mount -t zfs rpool/local/nix /mnt/nix
 	mount -t zfs rpool/state/system /mnt/var/state
 	mkdir -p /mnt/var/state/nixos
-	ln -s ../var/state/nixos /mnt/etc/nixos
+        # Don't error out if this already exists
+	ln -s ../var/state/nixos /mnt/etc/nixos || true
 }
 
 read -rp "About to mount file systems. Continue? (Y/(s)kip/(q)uit)" FS_MOUNT_INPUT
