@@ -8,9 +8,9 @@ Princeton SNS Group Cluster Configuration
 | [adam](./machines/adam/)   | [gamma](#gamma)* | OK                  | Central Cluster Services |
 | [sns26](./machines/sns26/) | [beta](#beta)    | OK                  | Matrix Synapse Host      |
 | [sns29](./machines/sns29/) | [beta](#beta)*   | OK*                 |                          |
-| [sns30](./machines/sns30/) | [beta](#beta)    | OK                  |                          |
-| [sns31](./machines/sns31/) | [beta](#beta)    | OK                  |                          |
-| [sns32](./machines/sns32/) | [beta](#beta)    | OK                  |                          |
+| [sns30](./machines/sns30/) | [beta](#beta)    | OK                  | Noise Project            |
+| [sns31](./machines/sns31/) | [beta](#beta)    | OK                  | Noise Project            |
+| [sns32](./machines/sns32/) | [beta](#beta)    | OK                  | Noise Project            |
 | [sns33](./machines/sns33/) | [beta](#beta)    | UNREACHABLE         |                          |
 | [sns35](./machines/sns35/) | [beta](#beta)    | OK                  |                          |
 | [sns38](./machines/sns38/) | [beta](#beta)    | OK*                 |                          |
