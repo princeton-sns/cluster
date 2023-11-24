@@ -17,7 +17,7 @@ Princeton SNS Group Cluster Configuration
 | [sns40](./machines/sns40/) | [beta](#beta)    | OK                  |                          |
 | [sns41](./machines/sns41/) | [beta](#beta)    | UNREACHABLE         |                          |
 | [sns43](./machines/sns43/) | [beta](#beta)    | OK                  |                          |
-| [sns44](./machines/sns44/) | [beta](#beta)    | REDUNDANT DISK FAIL |                          |
+| [sns44](./machines/sns44/) | [beta](#beta)    | REDUNDANT DISK FAIL | Faasten Project          |
 | [sns45](./machines/sns45/) | [beta](#beta)    | REDUNDANT DISK FAIL | Web Server               |
 | [sns46](./machines/sns46/) | [beta](#beta)    | DISK FAIL           |                          |
 | [sns47](./machines/sns47/) | [beta](#beta)    | OK                  |                          |
