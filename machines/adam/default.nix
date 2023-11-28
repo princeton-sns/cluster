@@ -141,6 +141,7 @@ in
 
   services.nginx.virtualHosts.${config.networking.fqdn} = {
     enableACME = true;
+    addSSL = true;
     locations."/".extraConfig = ''
       return 404;
     '';
