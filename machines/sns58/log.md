@@ -46,3 +46,6 @@ Current issues:
 
   errors: No known data errors
   ```
+
+Moved the bootloader off of this device, onto `/dev/sdb` (commit
+`09a68f5b6f5a`).
