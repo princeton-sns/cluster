@@ -120,7 +120,7 @@ let
 
       # Make a few useful utilities accessible:
       environment.systemPackages = with pkgs; [
-        vim tmux htop nload parted gptfdisk ipmitool
+        vim tmux htop nload parted gptfdisk ipmitool git
       ];
 
       boot.kernelParams = [
