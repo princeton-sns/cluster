@@ -1,5 +1,13 @@
 { config, pkgs, lib, ... }:
 
+let
+  githubSSHKeys = user:
+    builtins.map (record: record.key) (
+      builtins.fromJSON (
+        builtins.readFile (
+          builtins.fetchurl "https://api.github.com/users/${user}/keys")));
+
+in
 {
   imports = [
     ../../sns-cluster
@@ -32,6 +40,16 @@
         "95a4771c-9a18-4f6b-a1ab-04b2d71ded53"
       ];
     };
+  };
+
+  users.users.npopescu = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = githubSSHKeys "nataliepopescu";
+  };
+
+  users.users.leons = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = githubSSHKeys "lschuermann";
   };
 
   # This value determines the NixOS release from which the default
