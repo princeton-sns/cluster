@@ -1,6 +1,12 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }: let
 
-{
+  githubSSHKeys = user:
+    builtins.map (record: record.key) (
+      builtins.fromJSON (
+        builtins.readFile (
+          builtins.fetchurl "https://api.github.com/users/${user}/keys")));
+
+in {
   imports = [
     ../../sns-cluster
   ];
@@ -33,6 +39,20 @@
       ];
     };
   };
+
+
+  # ---- users
+
+  users.users.alevy = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = githubSSHKeys "alevy";
+  };
+
+  users.users.nkaas = {
+    isNormalUser = true;
+    openssh.authorizedKeys.keys = githubSSHKeys "nickaashoek";
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
