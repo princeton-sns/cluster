@@ -14,13 +14,6 @@ let
     ref = "refs/heads/main";
   };
 
-  nixpkgs2305 = let
-    rev = "4f138cd546fd0a32c4c0b576de10b34f120b48ce";
-  in import (builtins.fetchTarball {
-    url = "https://github.com/nixos/nixpkgs/archive/${rev}.tar.gz";
-    sha256 = "sha256:0vkl3xzhpjyrq10q405p3b1d4zgfxpq6x8bv26zyhbwk7my7nzwd";
-  }) {};
-
 in
 {
   imports = [
@@ -342,7 +335,7 @@ in
     services.zfs-snap-prune = {
       enable = true;
       mode = "prepare_first";
-      package = nixpkgs2305.callPackage zfsSnapPruneRepo {};
+      package = pkgs.callPackage zfsSnapPruneRepo {};
       jobs = [ {
         label = "Local rpool state";
         pool = "rpool";
