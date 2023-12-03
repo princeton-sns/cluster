@@ -53,17 +53,8 @@
     config = let
       hostConfig = config;
     in { pkgs, lib, config, ... }: {
-      disabledModules = [
-        "services/matrix/synapse.nix"
-      ];
-
-      imports = [
-        ./matrix-synapse-patched/synapse.nix
-      ];
-
       services.matrix-synapse = {
         enable = true;
-        overrideLocalPostgresCheck = true;
         settings = {
           server_name = "tockos.org";
           public_baseurl = "https://matrix.tockos.org/";
